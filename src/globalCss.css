@@ -1,0 +1,8 @@
+
+.swiper {
+  --swiper-pagination-color: #51a2ff; /* Active bullet color */
+  --swiper-pagination-bullet-inactive-color: #999; /* Inactive bullet color */
+  --swiper-pagination-bullet-size: 8px; /* Bullet size */
+  --swiper-pagination-bullet-horizontal-gap: 8px; /* Horizontal gap */
+  --swiper-pagination-bullet-vertical-gap: 6px;   /* Vertical gap */
+}
