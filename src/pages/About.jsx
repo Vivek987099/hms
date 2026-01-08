@@ -1,9 +1,12 @@
 import React from 'react'
+import InfoSection from './../components/InfoSection';
 
 function About() {
   return (
-    <div className='w-full h-screen flex justify-center items-center'>
-        <h1>About us</h1>
+   <div className='info-card w-full flex flex-col justify-center items-center z-0'>
+
+        <InfoSection  title="about"></InfoSection>
+
       
     </div>
   )

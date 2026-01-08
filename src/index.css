@@ -1,40 +1,70 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import "tailwindcss";
-@import 'animate.css';
+@import "animate.css";
 
 @layer utilities {
-    .container{
-        @apply mx-auto 2xl:w-[95%] xl:w-[90%] lg:w-[92%] md:w-[85%] w-[100%] px-3 md:px-0;
-    }
-    .active{
-        @apply  text-[#06adaa];
-    }
-    
+  .container {
+    @apply mx-auto 2xl:w-[95%] xl:w-[90%] lg:w-[92%] md:w-[85%] w-[100%] px-3 md:px-0;
+  }
 }
 
+@layer components {
+  .btn-custom-next,
+  .btn-custom-prev {
+    @apply z-2 bg-[#06adaa] text-white p-2 md:p-3 lg:p-4  shadow-lg cursor-pointer hover:bg-[#aaf2f1];
+  }
+  .btn-custom-next {
+    @apply absolute top-1/2 right-0 md:right-10;
+  }
+  .btn-custom-prev {
+    @apply absolute top-1/2 left-0 md:left-10;
+  }
+  .font-poppins {
+    font-family: "Poppins", sans-serif;
+  }
+  .container-fluid {
+    @apply w-full  lg:px-3;
+  }
+
+  .admin-sidebar {
+    height: calc(100vh-70px) !important;
+  }
+  .admin-menu li > a.active {
+    @apply bg-gray-100 font-semibold;
+  }
+  .headera.active {
+    @apply text-[#06adaa];
+  }
+  /* .add-user-form {
+        background-color: rgba(77, 77, 77, 0.1);
+        backdrop-filter: blur(2px);
+    } */
+  .user-page-container,
+  .doctor-page-container {
+    min-height: calc(100vh - 70px);
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
 
 
-@layer components{
-    .btn-custom-next,.btn-custom-prev{
-        @apply  z-2 bg-[#06adaa] text-white p-2 md:p-3 lg:p-4  shadow-lg cursor-pointer hover:bg-[#aaf2f1];
-    }
-    .btn-custom-next{
-        @apply absolute top-1/2 right-0 md:right-10
-
-    }
-    .btn-custom-prev{
-         @apply absolute top-1/2 left-0 md:left-10
-
-    }
-    .font-poppins{
-      font-family: "Poppins", sans-serif;
-    }
-       .container-fluid{
-        @apply w-full  lg:px-3 ;
-    }
-   
-    
-   
-    
-  
+  .loader {
+  height: 4px;
+  ;
+  --c:no-repeat linear-gradient(#6100ee 0 0);
+  background: var(--c),var(--c),#d7b8fc;
+  background-size: 60% 100%;
+  animation: l16 3s infinite;
+}
+@keyframes l16 {
+  0%   {background-position:-150% 0,-150% 0}
+  66%  {background-position: 250% 0,-150% 0}
+  100% {background-position: 250% 0, 250% 0}
+}
 }

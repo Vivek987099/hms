@@ -3,11 +3,13 @@ import { FaArrowRight } from "react-icons/fa";
 import { GiRibbonMedal } from "react-icons/gi";
 
 function DonctorInfoCard(props) {
+
+  
   return (
     <>
-      <div className="  font-poppins rounded-2xl shadow-xl w-80 h-110 overflow-hidden bg-white hover:translate-y-[-6px] transition-transform ease-in-out duration-500 cursor-pointer">
-        <div className="outline w-full h-65 overflow-hidden">
-          <img src="" alt="profle photo" className="w-full  object-center" />
+      <div className="  font-poppins rounded-2xl shadow-xl w-[18rem] h-[25rem] overflow-hidden bg-white hover:translate-y-[-6px] transition-transform ease-in-out duration-500 cursor-pointer">
+        <div className=" w-full h-[14rem] overflow-hidden">
+          <img src={`http://localhost:8080/file/${props.profilePhotoUrl}`} alt="profle photo" className="w-full  object-center" />
         </div>
 
         <div className="p-3">
@@ -19,7 +21,7 @@ function DonctorInfoCard(props) {
             30+ Years of Exp
           </p>
 
-          <button className="bg-[#06adaa] w-full mt-4 py-2 text-white font-[500] rounded-full flex items-center justify-center gap-2 hover:bg-[#059ca1] transition-colors duration-300">
+          <button className="bg-[#06adaa] w-full  mt-4 p-1.5 g:py-2 text-white font-[500] rounded-full flex items-center justify-center gap-2 hover:bg-[#059ca1] transition-colors duration-300">
             View Profile <FaArrowRight />
           </button>
         </div>
