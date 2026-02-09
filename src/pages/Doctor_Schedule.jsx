@@ -33,6 +33,13 @@ function Doctor_Schedule() {
     doctorId: "",
   });
 
+  let [scheduleValidationError, setScheduleValidationError] = useState({
+    dayError: "",
+    doctorError: "",
+    endTimeError: "",
+    startTimeError: "",
+  });
+
   let [currentScheduleId, setCurrentScheduleId] = useState("");
   let { makeScheduleModel, editScheduleModel, user } = useContext(AuthContext);
 
@@ -163,12 +170,26 @@ function Doctor_Schedule() {
           endTime: "",
           doctorId: "",
         });
+        setScheduleValidationError({
+          dayError: "",
+          doctorError: "",
+          endTimeError: "",
+          startTimeError: "",
+        });
         await fetchAllSchedules();
         makeScheduleModel.setOff();
         alert(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      
+      if (error.response.status === 400) {
+        setScheduleValidationError({
+          dayError: error.response.data.day,
+          doctorError: error.response.data.doctorId,
+          endTimeError: error.response.data.endTime,
+          startTimeError: error.response.data.startTime,
+        });
+      }
     }
   };
 
@@ -327,10 +348,16 @@ function Doctor_Schedule() {
                       name="startTime"
                       value={scheduleDetails.startTime}
                       onChange={handleScheduleDetailsChange}
-                      required
                       placeholder="Enter department name"
                       className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
                     />
+                    {scheduleValidationError.startTimeError && (
+                      <>
+                        <span className="text-red-500 text-sm">
+                          {scheduleValidationError.startTimeError}
+                        </span>
+                      </>
+                    )}
                   </div>
                   {/* ENDING TIME */}
                   <div>
@@ -343,9 +370,15 @@ function Doctor_Schedule() {
                       value={scheduleDetails.endTime}
                       placeholder="Enter Description"
                       onChange={handleScheduleDetailsChange}
-                      required
                       className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
                     />
+                    {
+                      scheduleValidationError.endTimeError && (<>
+                       <span className="text-red-500 text-sm">
+                          {scheduleValidationError.endTimeError}
+                        </span>
+                      </>)
+                    }
                   </div>
                   {/* SET DOCTOR */}
                   <div>
@@ -367,6 +400,11 @@ function Doctor_Schedule() {
                         </option>
                       ))}
                     </select>
+                    {scheduleValidationError.doctorError && (<>
+                     <span className="text-red-500 text-sm">
+                          {scheduleValidationError.doctorError}
+                        </span>
+                    </>)}
                   </div>
                   {/* SET DAY */}
                   <div>
@@ -399,6 +437,14 @@ function Doctor_Schedule() {
                         Saturday
                       </option>
                     </select>
+
+                    {
+                      scheduleValidationError.dayError && (<>
+                       <span className="text-red-500 text-sm">
+                          {scheduleValidationError.dayError}
+                        </span>
+                      </>)
+                    }
                   </div>
 
                   {/* Submit Button */}

@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { checkAuth, loginUser, logoutUser } from "./../api/Auth";
+import { checkAuth, getProfile, loginUser, logoutUser } from "./../api/Auth";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import useToggle from "../customhokks/useToggle";
@@ -11,7 +11,7 @@ const AuthContext = createContext();
 function AuthProvider({ children }) {
   let [user, setUser] = useState(null);
   let [isLoggedIn, setIsLoggedIn] = useState(false);
-  let [loading, setLoading] = useState(true);
+  let [loading, setLoading] = useState(false);
   let [allDepartment, setAllDepartment] = useState([]);
   let [allPatients, setAllPatients] = useState([]);
   let [isLast, setIsLast] = useState(false);
@@ -45,45 +45,77 @@ function AuthProvider({ children }) {
     }
   };
 
-  useEffect(() => {
-    let verifyAuth = async () => {
-      try {
-        let response = await checkAuth();
-        if (response.status === 200) {
+  let verifyAuth = async () => {
+    try {
+      setLoading(true)
+      let response = await checkAuth();
+      if(response.status===200){
+        setIsLoggedIn(response.data.LoggedIn)
+        let profile = await getProfile()
+        if(profile.status===200){
           setUser({
-            username: response.data.username,
-            role: response.data.role,
-          });
-          setIsLoggedIn(response.data.LoggedIn);
-          navigate("/admin/dashboard");
-        }
+              username: profile.data.username,
+            role: profile.data.role,
+            status:profile.data.status,
+            createAt:profile.data.createdAt
+          })
+          if(profile.data.role ==='ADMIN'){
+            navigate("/admin/dashboard");
 
-        setLoading(false);
-      } catch (error) {
-        if (error.response && error.response.status === 401) {
-          setUser(null);
-          setIsLoggedIn(false);
+          }
+          if(profile.data.role==='DOCTOR'){
+             navigate("/doctor/dashboard");
+
+          }
+          setLoading(false)
+
         }
-        navigate("/");
-        setLoading(false);
       }
-    };
+
+      
+    } catch (error) {
+      // if (error.response && error.response.status === 401) {
+      //   setUser(null);
+      //   setIsLoggedIn(false);
+      // }
+      // navigate("/");
+      // setLoading(false);
+      console.log(error);
+      
+    }
+  };
+
+  useEffect(() => {
     verifyAuth();
   }, []);
 
   let login = async (loginDetails) => {
+    setLoading(true);
     try {
       let response = await loginUser(loginDetails);
       let authResponse = await checkAuth();
 
       if (response.status === 200 && authResponse.status === 200) {
-        setUser({
-          username: authResponse.data.username,
-          role: authResponse.data.role,
-        });
         setIsLoggedIn(authResponse.data.LoggedIn);
 
-        navigate("/admin/dashboard");
+        let profileResult = await getProfile();
+        if (profileResult.status === 200) {
+          setUser({
+            username: profileResult.data.username,
+            role: profileResult.data.role,
+            status:profileResult.data.status,
+            createAt:profileResult.data.createdAt
+          });
+
+          setLoading(false);
+
+          if (profileResult.data.role === "ADMIN") {
+            navigate("/admin/dashboard");
+          }
+          if (profileResult.data.role === "DOCTOR") {
+            navigate("/doctor/dashboard");
+          }
+        }
 
         Swal.fire({
           title: "Login Successful",
@@ -98,6 +130,8 @@ function AuthProvider({ children }) {
         });
       }
     } catch (error) {
+      console.log(error);
+
       Swal.fire({
         title: "Login Failed",
         text:
@@ -137,11 +171,10 @@ function AuthProvider({ children }) {
   let editScheduleModel = useToggle(false);
   let makeAppointmentModel = useToggle(false);
   let updateAppointmentModel = useToggle(false);
-  let addPatientModel=useToggle(false)
-  let updatePatientModel=useToggle(false)
-  let sidebarToggle = useToggle(true)
-  let mobileMenuToggle=useToggle(false)
-
+  let addPatientModel = useToggle(false);
+  let updatePatientModel = useToggle(false);
+  let sidebarToggle = useToggle(true);
+  let mobileMenuToggle = useToggle(false);
 
   return (
     <AuthContext.Provider
@@ -173,7 +206,7 @@ function AuthProvider({ children }) {
         currentPage,
         sidebarToggle,
         updateAppointmentModel,
-        updatePatientModel
+        updatePatientModel,
       }}
     >
       {children}

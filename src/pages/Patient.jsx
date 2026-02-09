@@ -35,6 +35,11 @@ function Patient() {
   });
   let [currentPatientId, setCurrentPatientId] = useState(null);
 
+  let [nameError, setNameError] = useState("");
+  let [genderError, setGenderError] = useState("");
+  let [ageError, setAgeError] = useState("");
+  let [phoneError, setPhoneError] = useState("");
+
   useEffect(() => {
     fetchAllPatients();
   }, [currentPage]);
@@ -53,7 +58,6 @@ function Patient() {
       let res = await softDelete(id);
       if (res.status === 200) {
         setAllPatients(allPatients.filter((pat) => pat.patientId != id));
-
         alert(res.data.message);
       }
     } catch (error) {
@@ -81,14 +85,22 @@ function Patient() {
           phone: "",
           adderes: "",
         });
+        setNameError("");
+        setAgeError("");
+        setPhoneError("");
+        setGenderError("");
         addPatientModel.setOff();
         fetchAllPatients();
         alert(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 400) {
+        setNameError(error.response.data.patientName);
+        setAgeError(error.response.data.age);
+        setPhoneError(error.response.data.phone);
+        setGenderError(error.response.data.gender);
+      }
     }
-    console.log(patientDetails);
   };
 
   //  EDIT FUNCTIONALITY
@@ -128,13 +140,37 @@ function Patient() {
           phone: "",
           adderes: "",
         });
+        setNameError("");
+        setAgeError("");
+        setPhoneError("");
+        setGenderError("");
         fetchAllPatients();
         updatePatientModel.setOff();
         alert(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 400) {
+        setNameError(error.response.data.patientName);
+        setAgeError(error.response.data.age);
+        setPhoneError(error.response.data.phone);
+        setGenderError(error.response.data.gender);
+      }
     }
+  };
+  let handleUpdateCancel = () => {
+    setNameError("");
+    setAgeError("");
+    setPhoneError("");
+    setGenderError("");
+    updatePatientModel.setOff();
+  };
+
+  let handleAddPatientCancel = () => {
+    setNameError("");
+    setAgeError("");
+    setPhoneError("");
+    setGenderError("");
+    addPatientModel.setOff();
   };
 
   return (
@@ -166,7 +202,7 @@ function Patient() {
             </button>
           </div>
         </div>
-        <div className="mt-5 overflow-x-auto outline-2 outline-gray-200 rounded-lg">
+        <div className="table-wrapper mt-5 overflow-x-auto  outline-2 outline-gray-200 rounded-lg">
           <table className="w-full ">
             <thead className="bg-[#f8f9fa] text-[#2c3e50]">
               <tr className="border-b border-gray-300">
@@ -196,11 +232,19 @@ function Patient() {
                   <td className="px-10 py-3 text-left whitespace-nowrap">
                     {patient.patientName}
                   </td>
-                  <td className="px-10 py-3 text-left whitespace-nowrap">{patient.gender}</td>
-                  <td className="px-10 py-3 text-left whitespace-nowrap">{patient.phone}</td>
-                  <td className="px-10 py-3 text-left whitespace-nowrap">{patient.adderes}</td>
+                  <td className="px-10 py-3 text-left whitespace-nowrap">
+                    {patient.gender}
+                  </td>
+                  <td className="px-10 py-3 text-left whitespace-nowrap">
+                    {patient.phone}
+                  </td>
+                  <td className="px-10 py-3 text-left whitespace-nowrap">
+                    {patient.adderes}
+                  </td>
 
-                  <td className="px-10 py-3 text-left whitespace-nowrap">{patient.createdAt}</td>
+                  <td className="px-10 py-3 text-left whitespace-nowrap">
+                    {patient.createdAt}
+                  </td>
 
                   {user.role === "ADMIN" && (
                     <td className=" px-10 py-3 text-center font-semibold flex flex-col lg:flex-row">
@@ -230,127 +274,149 @@ function Patient() {
       {addPatientModel.value && (
         <>
           <div className="add-user-form add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
-            <div className="bg-white p-7 rounded md:w-1/2 lg:w-1/3">
+            <div className="bg-white h-full p-7 w-full">
               <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
                 Add Patient
               </h3>
               <form onSubmit={submitPatientDetails} className="space-y-4 ">
-                {/* name */}
-                <div>
-                  <label className="block text-sm font-[500] text-gray-600 mb-1">
-                    Patient Name :
-                  </label>
-                  <input
-                    type="text"
-                    name="patientName"
-                    required
-                    onChange={patientDetailsChange}
-                    value={patientDetails.patientName}
-                    placeholder="Enter username"
-                    className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                  />
-                </div>
-                <div className=" mt-3">
-                  <p className="block text-sm font-[500] text-gray-600 mb-1">
-                    Select Gender :{" "}
-                  </p>
-                  <div className="flex gap-x-3 mt-3">
-                    <div>
-                      <input
-                        type="radio"
-                        value="Male"
-                        name="gender"
-                        checked={patientDetails.gender === "Male"}
-                        id="male"
-                        required
-                        onChange={(e) =>
-                          setPatientDetails({
-                            ...patientDetails,
-                            gender: e.target.value,
-                          })
-                        }
-                        className="peer hidden"
-                      />
-                      <label
-                        htmlFor="male"
-                        className="border-2 cursor-pointer border-[#06adaa] px-4 py-1 rounded font-semibold text-[#06adaa] transition-all duration-200 peer-checked:bg-[#06adaa] peer-checked:text-white peer-checked:outline-0"
-                      >
-                        Male
-                      </label>
-                    </div>
-                    <div>
-                      <input
-                        type="radio"
-                        value="Female"
-                        name="gender"
-                        required
-                        id="female"
-                        checked={patientDetails.gender === "Female"}
-                        onChange={(e) =>
-                          setPatientDetails({
-                            ...patientDetails,
-                            gender: e.target.value,
-                          })
-                        }
-                        className="peer hidden"
-                      />
-                      <label
-                        htmlFor="female"
-                        className="border-2 cursor-pointer border-[#06adaa] px-4 py-1 rounded font-semibold text-[#06adaa] transition-all duration-200 peer-checked:bg-[#06adaa] peer-checked:text-white peer-checked:outline-0"
-                      >
-                        Female
-                      </label>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 place-items-center">
+                  {/* name */}
+                  <div className="w-full">
+                    <label className="block text-sm font-[500] text-gray-600 mb-1">
+                      Patient Name :
+                    </label>
+                    <input
+                      type="text"
+                      name="patientName"
+                      onChange={patientDetailsChange}
+                      value={patientDetails.patientName}
+                      placeholder="Enter username"
+                      className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                    />
+                    {nameError && (
+                      <>
+                        <span className="text-red-500 text-sm">
+                          {nameError}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <div className="  w-full">
+                    <p className="block text-sm font-[500] text-gray-600 ">
+                      Select Gender :{" "}
+                    </p>
+                    <div className="flex gap-x-3 mt-3">
+                      <div>
+                        <input
+                          type="radio"
+                          value="Male"
+                          name="gender"
+                          checked={patientDetails.gender === "Male"}
+                          id="male"
+                          onChange={(e) =>
+                            setPatientDetails({
+                              ...patientDetails,
+                              gender: e.target.value,
+                            })
+                          }
+                          className="peer hidden"
+                        />
+                        <label
+                          htmlFor="male"
+                          className="border-2 cursor-pointer border-[#06adaa] px-4 py-1 rounded font-semibold text-[#06adaa] transition-all duration-200 peer-checked:bg-[#06adaa] peer-checked:text-white peer-checked:outline-0"
+                        >
+                          Male
+                        </label>
+                      </div>
+                      <div>
+                        <input
+                          type="radio"
+                          value="Female"
+                          name="gender"
+                          id="female"
+                          checked={patientDetails.gender === "Female"}
+                          onChange={(e) =>
+                            setPatientDetails({
+                              ...patientDetails,
+                              gender: e.target.value,
+                            })
+                          }
+                          className="peer hidden"
+                        />
+                        <label
+                          htmlFor="female"
+                          className="border-2 cursor-pointer border-[#06adaa] px-4 py-1 rounded font-semibold text-[#06adaa] transition-all duration-200 peer-checked:bg-[#06adaa] peer-checked:text-white peer-checked:outline-0"
+                        >
+                          Female
+                        </label>
+                      </div>
+                      {genderError && (
+                        <>
+                          <span className="text-red-500 text-sm">
+                            {genderError}
+                          </span>
+                        </>
+                      )}
                     </div>
                   </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Age :
-                  </label>
-                  <input
-                    type="number"
-                    name="age"
-                    onChange={patientDetailsChange}
-                    required
-                    value={patientDetails.age}
-                    placeholder="Enter age"
-                    className="w-full border appearance-none border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone :
-                  </label>
-                  <input
-                    type="text"
-                    name="phone"
-                    onChange={patientDetailsChange}
-                    required
-                    value={patientDetails.phone}
-                    placeholder="Enter phone"
-                    className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Address :
-                  </label>
-                  <input
-                    type="text"
-                    name="adderes"
-                    required
-                    onChange={patientDetailsChange}
-                    value={patientDetails.adderes}
-                    placeholder="Enter address"
-                    className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                  />
+                  <div className="w-full">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Age :
+                    </label>
+                    <input
+                      type="number"
+                      name="age"
+                      onChange={patientDetailsChange}
+                      value={patientDetails.age}
+                      placeholder="Enter age"
+                      className="w-full border appearance-none border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                    />
+                    {ageError && (
+                      <>
+                        <span className="text-red-500 text-sm">{ageError}</span>
+                      </>
+                    )}
+                  </div>
+                  <div className="w-full">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Phone :
+                    </label>
+                    <input
+                      type="text"
+                      name="phone"
+                      onChange={patientDetailsChange}
+                      value={patientDetails.phone}
+                      placeholder="Enter phone"
+                      className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                    />
+                    {phoneError && (
+                      <>
+                        <span className="text-red-500 text-sm">
+                          {phoneError}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <div className="w-full">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Address :
+                    </label>
+                    <input
+                      type="text"
+                      name="adderes"
+                      onChange={patientDetailsChange}
+                      value={patientDetails.adderes}
+                      placeholder="Enter address"
+                      className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                    />
+                  </div>
                 </div>
 
                 {/* Submit Button */}
-                <div className="flex justify-end gap-x-5 mt-8">
+                <div className="flex justify-center gap-x-5 mt-18">
                   <button
                     type="button"
-                    onClick={() => addPatientModel.setOff()}
+                    onClick={handleAddPatientCancel}
                     className="cursor-pointer w-1/3 bg-[#707070] text-white py-2 rounded-md font-semibold hover:bg-[#565656] transition duration-300"
                   >
                     cencel
@@ -374,127 +440,150 @@ function Patient() {
       {updatePatientModel.value && (
         <>
           <div className="add-user-form add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
-            <div className="bg-white p-7 rounded md:w-1/2 lg:w-1/3">
+            <div className="bg-white p-7  w-full h-full">
               <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
                 Upadte Patient
               </h3>
               <form onSubmit={submitUpdateDetails} className="space-y-4 ">
-                {/* name */}
-                <div>
-                  <label className="block text-sm font-[500] text-gray-600 mb-1">
-                    Patient Name :
-                  </label>
-                  <input
-                    type="text"
-                    name="patientName"
-                    required
-                    value={updateDetails.patientName}
-                    onChange={updateDetailsChange}
-                    placeholder="Enter username"
-                    className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                  />
-                </div>
-                <div className=" mt-3">
-                  <p className="block text-sm font-[500] text-gray-600 mb-1">
-                    Select Gender :{" "}
-                  </p>
-                  <div className="flex gap-x-3 mt-3">
-                    <div>
-                      <input
-                        type="radio"
-                        value="Male"
-                        name="gender"
-                        checked={updateDetails.gender === "Male"}
-                        id="male"
-                        required
-                        onChange={(e) =>
-                          setUpdateDetails({
-                            ...updateDetails,
-                            gender: e.target.value,
-                          })
-                        }
-                        className="peer hidden"
-                      />
-                      <label
-                        htmlFor="male"
-                        className="border-2 cursor-pointer border-[#06adaa] px-4 py-1 rounded font-semibold text-[#06adaa] transition-all duration-200 peer-checked:bg-[#06adaa] peer-checked:text-white peer-checked:outline-0"
-                      >
-                        Male
-                      </label>
-                    </div>
-                    <div>
-                      <input
-                        type="radio"
-                        value="Female"
-                        name="gender"
-                        required
-                        id="female"
-                        checked={updateDetails.gender === "Female"}
-                        onChange={(e) =>
-                          setUpdateDetails({
-                            ...updateDetails,
-                            gender: e.target.value,
-                          })
-                        }
-                        className="peer hidden"
-                      />
-                      <label
-                        htmlFor="female"
-                        className="border-2 cursor-pointer border-[#06adaa] px-4 py-1 rounded font-semibold text-[#06adaa] transition-all duration-200 peer-checked:bg-[#06adaa] peer-checked:text-white peer-checked:outline-0"
-                      >
-                        Female
-                      </label>
-                    </div>
+                <div className="grid place-items-center grid-cols-2 gap-5">
+                  {/* name */}
+                  <div className="w-full">
+                    <label className="block text-sm font-[500] text-gray-600 mb-1">
+                      Patient Name :
+                    </label>
+                    <input
+                      type="text"
+                      name="patientName"
+                      value={updateDetails.patientName}
+                      onChange={updateDetailsChange}
+                      placeholder="Enter username"
+                      className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                    />
+                    {nameError && (
+                      <>
+                        <span className="text-red-500 text-sm">
+                          {nameError}
+                        </span>
+                      </>
+                    )}
                   </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Age :
-                  </label>
-                  <input
-                    type="number"
-                    name="age"
-                    required
-                    value={updateDetails.age}
-                    onChange={updateDetailsChange}
-                    placeholder="Enter age"
-                    className="w-full border appearance-none border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone :
-                  </label>
-                  <input
-                    type="text"
-                    name="phone"
-                    required
-                    onChange={updateDetailsChange}
-                    value={updateDetails.phone}
-                    placeholder="Enter phone"
-                    className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Address :
-                  </label>
-                  <input
-                    type="text"
-                    name="adderes"
-                    onChange={updateDetailsChange}
-                    required
-                    value={updateDetails.adderes}
-                    placeholder="Enter address"
-                    className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                  />
+                  <div className=" w-full">
+                    <p className="block text-sm font-[500] text-gray-600 mb-1">
+                      Select Gender :{" "}
+                    </p>
+                    <div className="flex gap-x-3 mt-3">
+                      <div>
+                        <input
+                          type="radio"
+                          value="Male"
+                          name="gender"
+                          checked={updateDetails.gender === "Male"}
+                          id="male"
+                          onChange={(e) =>
+                            setUpdateDetails({
+                              ...updateDetails,
+                              gender: e.target.value,
+                            })
+                          }
+                          className="peer hidden"
+                        />
+                        <label
+                          htmlFor="male"
+                          className="border-2 cursor-pointer border-[#06adaa] px-4 py-1 rounded font-semibold text-[#06adaa] transition-all duration-200 peer-checked:bg-[#06adaa] peer-checked:text-white peer-checked:outline-0"
+                        >
+                          Male
+                        </label>
+                      </div>
+                      <div>
+                        <input
+                          type="radio"
+                          value="Female"
+                          name="gender"
+                          id="female"
+                          checked={updateDetails.gender === "Female"}
+                          onChange={(e) =>
+                            setUpdateDetails({
+                              ...updateDetails,
+                              gender: e.target.value,
+                            })
+                          }
+                          className="peer hidden"
+                        />
+                        <label
+                          htmlFor="female"
+                          className="border-2 cursor-pointer border-[#06adaa] px-4 py-1 rounded font-semibold text-[#06adaa] transition-all duration-200 peer-checked:bg-[#06adaa] peer-checked:text-white peer-checked:outline-0"
+                        >
+                          Female
+                        </label>
+                      </div>
+                    </div>
+                    {genderError && (
+                      <>
+                        <span className="text-red-500 text-sm">
+                          {genderError}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <div className="w-full">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Age :
+                    </label>
+                    <input
+                      type="number"
+                      name="age"
+                      value={updateDetails.age}
+                      onChange={updateDetailsChange}
+                      placeholder="Enter age"
+                      className="w-full border appearance-none border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                    />
+                    {ageError && (
+                      <>
+                        <span className="text-red-500 text-sm">{ageError}</span>
+                      </>
+                    )}
+                  </div>
+                  <div className="w-full">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Phone :
+                    </label>
+                    <input
+                      type="text"
+                      name="phone"
+                      onChange={updateDetailsChange}
+                      value={updateDetails.phone}
+                      placeholder="Enter phone"
+                      className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                    />
+
+                    {phoneError && (
+                      <>
+                        <span className="text-red-500 text-sm">
+                          {phoneError}
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <div className="w-full">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Address :
+                    </label>
+                    <input
+                      type="text"
+                      name="adderes"
+                      onChange={updateDetailsChange}
+                      value={updateDetails.adderes}
+                      placeholder="Enter address"
+                      className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                    />
+                  </div>
                 </div>
 
                 {/* Submit Button */}
-                <div className="flex justify-end gap-x-5 mt-8">
+                <div className="flex justify-center gap-x-5 mt-18">
                   <button
                     type="button"
-                    onClick={() => updatePatientModel.setOff()}
+                    onClick={handleUpdateCancel}
                     className="cursor-pointer w-1/3 bg-[#707070] text-white py-2 rounded-md font-semibold hover:bg-[#565656] transition duration-300"
                   >
                     cencel

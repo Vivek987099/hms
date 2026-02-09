@@ -1,9 +1,6 @@
 import Home from "./pages/Home";
 import { Route, Routes } from "react-router-dom";
-import Services from "./pages/Services";
 import Layout from "./pages/Layout";
-import Contact from "./pages/Contact";
-import About from "./pages/About";
 import Login from "./pages/Login";
 
 import AdminDashboard from "./pages/AdminDashboard";
@@ -17,6 +14,10 @@ import Appointments from "./pages/Appointments";
 import Patient from "./pages/Patient";
 import Doctor_Schedule from "./pages/Doctor_Schedule";
 import Department from "./pages/Department";
+import DoctorLayout from "./pages/doctor/DoctorLayout";
+import DoctorProfile from "./pages/doctor/DoctorProfile";
+import DoctorAppointment from './components/Doctor/DoctorAppointment';
+import Contact from "./pages/Contact";
 
 function App() {
   return (
@@ -25,15 +26,13 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/contact" element={<Contact />} />
+            <Route path="contact" element={<Contact />} />
           </Route>
 
           <Route path="/login" element={<Login />}>
           </Route>
 
-          <Route path="/admin/dashboard" element={  <ProtectedRoute>  <AdminDashboard /></ProtectedRoute>}>
+          <Route path="/admin/dashboard" element={  <ProtectedRoute allowRoles={['ADMIN']} >  <AdminDashboard /></ProtectedRoute>}>
             <Route index element={<Dashboard/>}></Route>
             <Route path="users" element={<Users/>}></Route>
             <Route path="doctors" element={<Doctors/>}></Route>
@@ -42,6 +41,13 @@ function App() {
             <Route path="doctor-schedule" element={<Doctor_Schedule/>}></Route>
             <Route path="department" element={<Department />}></Route>
           </Route>
+
+
+          <Route path="/doctor/dashboard" element={  <ProtectedRoute allowRoles={['DOCTOR']} >  <DoctorLayout /></ProtectedRoute>}>
+            <Route index element={<DoctorProfile/>}></Route>
+            <Route path="appointments" element={<DoctorAppointment/>}></Route>
+          </Route>
+          
 
           <Route path="*" element={<PageNotFound />}></Route>
         </Routes>

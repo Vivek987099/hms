@@ -43,7 +43,7 @@ function Login() {
 
   return (
     <>
-      <div className="flex items-center justify-center min-h-screen   px-4">
+      <div className="flex items-center justify-center min-h-screen bg-[#eaf3fa]  px-4">
         <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-8">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
             Login To HMS

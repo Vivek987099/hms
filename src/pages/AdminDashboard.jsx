@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { getUserProfile } from "../api/User";
+import React, { useContext } from "react";
 import AdminHeader from "../components/adminComponents/AdminHeader";
 import AdminSidebard from "./../components/adminComponents/AdminSidebard";
 import { Outlet } from "react-router";
@@ -8,27 +7,7 @@ import { AuthContext } from "../context/AuthProvider";
 function AdminDashboard() {
 
   let {sidebarToggle} =useContext(AuthContext)
-  let [user, setUser] = useState({
-    id: "",
-    username: "",
-    role: "",
-    password: "",
-  });
-
-  let userDetails = async () => {
-    let res = await getUserProfile();
-    if (res.status === 200) {
-      setUser({
-        id: res.data.id,
-        username: res.data.username,
-        role: res.data.role,
-        password: res.data.password,
-      });
-    }
-  };
-  useEffect(() => {
-    userDetails();
-  }, []);
+  
 
   return (
     <>

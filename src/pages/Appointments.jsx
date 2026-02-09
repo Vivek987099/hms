@@ -27,6 +27,13 @@ function Appointments() {
     patientId: "",
   });
 
+  let [aptValidationError, setAptValidationError] = useState({
+    dateError: "",
+    doctor: "",
+    patient: "",
+    time: "",
+  });
+
   let [status, setStatus] = useState("");
   let [currentAptId, setCurrentAptId] = useState(null);
 
@@ -132,17 +139,39 @@ function Appointments() {
           doctorId: "",
           patientId: "",
         });
+        setAptValidationError({
+          date: "",
+          time: "",
+          doctorId: "",
+          patientId: "",
+        });
 
         fetchAllAppointments();
         makeAppointmentModel.setOff();
         alert(res.data.message);
       }
     } catch (error) {
-      console.log(error);
+      if (error.response.status === 400) {
+        setAptValidationError({
+          dateError: error.response.data.date,
+          doctor: error.response.data.doctorId,
+          patient: error.response.data.patientId,
+          time: error.response.data.time,
+        });
+      }
     }
-
-    console.log(appointmentDetails);
   };
+
+  let handleSubmitCancel=()=>{
+    setAptValidationError({
+       dateError: "",
+    doctor: "",
+    patient: "",
+    time: "",
+
+    })
+    makeAppointmentModel.setOff()
+  }
 
   return (
     <>
@@ -164,7 +193,7 @@ function Appointments() {
                   name="status"
                 >
                   <option className="text-gray-500" value="">
-                    Select City
+                    Select status
                   </option>
                   <option className="text-gray-500" value="BOOKED">
                     BOOKED
@@ -312,12 +341,18 @@ function Appointments() {
                   <input
                     type="date"
                     name="date"
-                    required
                     onChange={handleAppointDataChange}
                     value={appointmentDetails.date}
                     placeholder="Enter username"
                     className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
                   />
+                  {aptValidationError.dateError && (
+                    <>
+                      <span className="text-red-500 text-sm">
+                        {aptValidationError.dateError}
+                      </span>
+                    </>
+                  )}
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -329,9 +364,15 @@ function Appointments() {
                     onChange={handleAppointDataChange}
                     value={appointmentDetails.time}
                     placeholder="example@gmail.com"
-                    required
                     className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
                   />
+                  {aptValidationError.time && (
+                    <>
+                      <span className="text-red-500 text-sm">
+                        {aptValidationError.time}
+                      </span>
+                    </>
+                  )}
                 </div>
 
                 <div>
@@ -353,6 +394,14 @@ function Appointments() {
                       </option>
                     ))}
                   </select>
+
+                  {aptValidationError.patient && (
+                    <>
+                      <span className="text-red-500 text-sm">
+                        {aptValidationError.patient}
+                      </span>
+                    </>
+                  )}
                 </div>
 
                 <div>
@@ -389,13 +438,20 @@ function Appointments() {
                       </option>
                     ))}
                   </select>
+                  {aptValidationError.doctor && (
+                    <>
+                      <span className="text-red-500 text-sm">
+                        {aptValidationError.doctor}
+                      </span>
+                    </>
+                  )}
                 </div>
 
                 {/* Submit Button */}
                 <div className="flex justify-end gap-x-5 mt-8">
                   <button
                     type="button"
-                    onClick={() => makeAppointmentModel.setOff()}
+                    onClick={handleSubmitCancel}
                     className="cursor-pointer w-1/3 bg-[#707070] text-white py-2 rounded-md font-semibold hover:bg-[#565656] transition duration-300"
                   >
                     cencel

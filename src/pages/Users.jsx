@@ -12,8 +12,9 @@ import {
 
 function Users() {
   let location = useLocation();
-  let { addUserModel, user } = useContext(AuthContext);
+  let { addUserModel, user ,allDepartment,fetchAllDepartment} = useContext(AuthContext);
   let [step, setStep] = useState(1);
+  let [doctorRole, setDoctorRole] = useState(false);
 
   let [message, setMessage] = useState("");
 
@@ -27,29 +28,53 @@ function Users() {
     role: "",
   });
 
+  const [doctorDetails, setdoctorDetails] = useState({
+    doctorName: "",
+    specialization: "",
+    fee: "",
+    departmentId: "",
+  });
+  const [file, setFile] = useState(null);
+
   let [allUser, setAllUser] = useState([]);
 
   let handleChange = (e) => {
     let { name, value } = e.target;
-    setUserDetails({ ...userDetails, [name]: value });
+    if (name === "username" || name === "password" || name === "role") {
+      setUserDetails({ ...userDetails, [name]: value });
+    }
+
+    if (
+      name === "doctorName" ||
+      name === "specialization" ||
+      name === "fee" ||
+      name === "departmentId"
+    ) {
+      setdoctorDetails({ ...doctorDetails, [name]: value });
+    }
+
+    if(name==='profilePhoto'){
+      setFile(e.target.files[0])
+    }
   };
 
   let handleSendOtp = async (e) => {
     e.preventDefault();
 
-    try {
-      setLoading(true);
-      let res = await addNewUser(userDetails);
+    let formData = new FormData();
+    formData.append("user", new Blob([JSON.stringify(userDetails)],{type:"application/json"}))
+    formData.append('doctor',new Blob([JSON.stringify(doctorDetails)],{type:'application/json'}))
+    formData.append('file',file)
+   for(let [key,value] of formData.entries()){
+    console.log(`${key} : ${value}`)
+   }
+    
+     let res = await addNewUser(formData);
+     if(res.status === 200){
+      alert("OTP sent to registered email");
+     }
 
-      if (res.status === 200) {
-        setMessage(res.data.message);
-        setLoading(false);
-        setStep(2);
-      }
-    } catch (error) {
-      console.log(error);
-      setLoading(false);
-    }
+    
   };
 
   let handleVerifyOTP = async (e) => {
@@ -62,6 +87,8 @@ function Users() {
     try {
       setLoading(true);
       let res = await verifyUserOtp(verifyDetails);
+      console.log(res.data);
+      `user id ${res.data}`;
       if (res.status === 200) {
         setLoading(false);
         setStep(1);
@@ -73,6 +100,7 @@ function Users() {
         });
         setMessage("");
         addUserModel.setOff();
+        fetchAllUsers();
         alert("User Registered successfully");
       }
     } catch (error) {
@@ -80,19 +108,19 @@ function Users() {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    let fetchAllUsers = async () => {
-      try {
-        let res = await getAllUsers(10, 0);
-        if (res.status === 200) {
-          setAllUser(res.data.content);
-        }
-      } catch (error) {
-        console.log(error);
+  let fetchAllUsers = async () => {
+    try {
+      let res = await getAllUsers(10, 0);
+      if (res.status === 200) {
+        setAllUser(res.data.content);
       }
-    };
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
     fetchAllUsers();
+    fetchAllDepartment()
   }, []);
 
   let handleDeleteUser = async (id) => {
@@ -202,13 +230,13 @@ function Users() {
           <>
             <div className="add-user-form add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
               {step === 1 && (
-                <div className="bg-white p-7 rounded md:w-1/2 lg:w-1/3">
+                <div className={`bg-white p-7 rounded h-full w-full`}>
                   {!loading ? (
                     <>
                       <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
                         Add User
                       </h3>
-                      <form onSubmit={handleSendOtp} className="space-y-4 ">
+                      <form onSubmit={handleSendOtp} className="{space-y-4 }">
                         {/* Email */}
                         <div>
                           <label className="block text-sm font-[500] text-gray-600 mb-1">
@@ -219,6 +247,7 @@ function Users() {
                             value={userDetails.username}
                             onChange={handleChange}
                             name="username"
+                            required
                             placeholder="Enter username"
                             className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
                           />
@@ -230,6 +259,7 @@ function Users() {
                           <input
                             type="password"
                             name="password"
+                            required
                             onChange={handleChange}
                             value={userDetails.password}
                             placeholder="Enter password"
@@ -240,22 +270,147 @@ function Users() {
                           <label className="block text-sm font-medium text-gray-700 mb-1">
                             Role :
                           </label>
-                         
 
-                          <select
-                            name="role"
-                            onChange={handleChange}
-                            className="w-full border border-gray-300 rounded-md p-2  focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                          >
-                            <option value="">Select Role...</option>
-                            <option value="ADMIN">ADMIN</option>
-                            <option value="DOCTOR">DOCTOR</option>
-
-                          </select>
+                          <div className=" flex  gap-x-7 mt-3">
+                            <div>
+                              <input
+                                type="radio"
+                                value="ADMIN"
+                                name="role"
+                                checked={userDetails.role === "ADMIN"}
+                                id="admin"
+                                onChange={(e) => {
+                                  (setDoctorRole(false),
+                                    setUserDetails({
+                                      ...userDetails,
+                                      role: e.target.value,
+                                    }));
+                                }}
+                                className="peer hidden"
+                              />
+                              <label
+                                htmlFor="admin"
+                                className="border-2 cursor-pointer border-[#06adaa] px-4 py-1 rounded font-semibold text-[#06adaa] transition-all duration-200 peer-checked:bg-[#06adaa] peer-checked:text-white peer-checked:outline-0"
+                              >
+                                ADMIN
+                              </label>
+                            </div>
+                            <div>
+                              <input
+                                type="radio"
+                                value="DOCTOR"
+                                name="role"
+                                id="doctor"
+                                checked={userDetails.role === "DOCTOR"}
+                                onChange={(e) => {
+                                  (setDoctorRole(true),
+                                    setUserDetails({
+                                      ...userDetails,
+                                      role: e.target.value,
+                                    }));
+                                }}
+                                className="peer hidden"
+                              />
+                              <label
+                                htmlFor="doctor"
+                                className="border-2 cursor-pointer border-[#06adaa] px-4 py-1 rounded font-semibold text-[#06adaa] transition-all duration-200 peer-checked:bg-[#06adaa] peer-checked:text-white peer-checked:outline-0"
+                              >
+                                DOCTOR
+                              </label>
+                            </div>
+                          </div>
                         </div>
 
+                        {doctorRole && (
+                          <>
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
+                              <div>
+                                <label className="block text-sm font-[500] text-gray-600 mb-1">
+                                  Doctor Name :
+                                </label>
+                                <input
+                                  type="text"
+                                  onChange={handleChange}
+                                  value={doctorDetails.doctorName}
+                                  name="doctorName"
+                                  placeholder="Enter username"
+                                  className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                                />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                  Specialization :
+                                </label>
+                                <input
+                                  type="text"
+                                  name="specialization"
+                                  onChange={handleChange}
+                                  value={doctorDetails.specialization}
+                                  placeholder="Enter specialization"
+                                  className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                                />
+                              </div>
+                              <div>
+                                <select
+                                  name="departmentId"
+                                  onChange={handleChange}
+                                  value={doctorDetails.departmentId}
+                                  className="w-full text-gray-500 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                                >
+                                  <option value="">Select Department</option>
+                                   {allDepartment.map((department, index) => (
+                            <option key={index} value={department.departId}>
+                              {department.departmentName}
+                            </option>
+                          ))}
+                                </select>
+                              </div>
+
+                              {/* Fee */}
+                              <div>
+                                <label
+                                  htmlFor="fee"
+                                  className="block text-gray-700 font-medium mb-1"
+                                >
+                                  Consultation Fee
+                                </label>
+                                <input
+                                  type="number"
+                                  onChange={handleChange}
+                                  value={doctorDetails.fee}
+                                  name="fee"
+                                  id="fee"
+                                  placeholder="Enter Fee "
+                                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500"
+                                />
+                              </div>
+
+                              {/* SELECT USER FOR DOCTOR  */}
+
+                              {/* Profile Photo */}
+                              <div>
+                                <label
+                                  htmlFor="profilePhoto"
+                                  className="block text-gray-700 font-medium mb-1"
+                                >
+                                  Profile Photo
+                                </label>
+                                <input
+                                  type="file"
+                                  name="profilePhoto"
+                                  id="profilePhoto"
+                                  onChange={handleChange}
+                                  accept="image/*"
+                                  className="w-full text-gray-700 cursor-pointer"
+                                />
+                              </div>
+                            </div>
+                          </>
+                        )}
+
                         {/* Submit Button */}
-                        <div className="flex justify-end gap-x-5 mt-8">
+                        <div className="flex justify-center gap-x-5 mt-8">
                           <button
                             type="button"
                             disabled={loading}

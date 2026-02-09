@@ -8,3 +8,4 @@ import axios from "axios";
 export let loginUser=(loginDetails)=>authentication.post("/login",loginDetails)
 export let checkAuth=()=>authentication.get("/checkAuth")
 export let logoutUser=()=>authentication.post("/logout")
+export let getProfile=()=>authentication.get("/profile")

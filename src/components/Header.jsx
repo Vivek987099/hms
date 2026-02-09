@@ -7,17 +7,14 @@ import { IoMenu, IoClose } from "react-icons/io5";
 function Header() {
   let menus = [
     { name: "Home", path: "/" },
-    { name: "About", path: "/about" },
-    { name: "Services", path: "/services" },
     { name: "Contact", path: "/contact" },
   ];
   let [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  let navigate=useNavigate();
+  let navigate = useNavigate();
 
   function toggleMenu() {
     setIsMenuOpen(!isMenuOpen);
   }
-
 
   return (
     <>
@@ -49,30 +46,33 @@ function Header() {
               ))}
             </nav>
             <button
-              onClick={()=>navigate("/login")}
+              onClick={() => navigate("/login")}
               className="bg-[#06adaa] text-white font-semibold px-3 py-1 rounded cursor-pointer"
             >
               Login
             </button>
-           
 
             {/* ===== MENU BUTTONS ====== */}
-            {
-              !isMenuOpen && !isMenuOpen ? (<> <button
-              onClick={toggleMenu}
-              className="lg:hidden bg-[#06adaa] text-white font-semibold px-2 py-1 text-2xl rounded cursor-pointer"
-            >
-              <IoMenu />
-            </button></>):(<><button
-              onClick={toggleMenu}
-              className="lg:hidden bg-[#06adaa] text-white font-semibold px-2 py-1 text-2xl rounded cursor-pointer"
-            >
-              <IoClose />
-            </button></>)
-
-
-            }
-            
+            {!isMenuOpen && !isMenuOpen ? (
+              <>
+                {" "}
+                <button
+                  onClick={toggleMenu}
+                  className="lg:hidden bg-[#06adaa] text-white font-semibold px-2 py-1 text-2xl rounded cursor-pointer"
+                >
+                  <IoMenu />
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={toggleMenu}
+                  className="lg:hidden bg-[#06adaa] text-white font-semibold px-2 py-1 text-2xl rounded cursor-pointer"
+                >
+                  <IoClose />
+                </button>
+              </>
+            )}
 
             {/* MOBILE MENU */}
             {isMenuOpen && isMenuOpen ? (

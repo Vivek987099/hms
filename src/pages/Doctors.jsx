@@ -10,6 +10,7 @@ import {
 } from "../api/Doctors";
 import { FaChevronRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
+import { getUserByRole } from "../api/User";
 
 function Doctors() {
   let location = useLocation();
@@ -20,7 +21,6 @@ function Doctors() {
     doctorName: "",
     specialization: "",
     fee: "",
-    email: "",
     departmentId: "",
   });
   const [updateDoctorDetails, setUpdateDoctorDetails] = useState({
@@ -32,7 +32,19 @@ function Doctors() {
     departmentId: "",
   });
 
+  let [validationsError, setValidationsError] = useState({
+    departmentId: "",
+    doctorName: "",
+    email: "",
+    fee: "",
+    specialization: "",
+  });
+
   const [currentDoctorId, setCurrentDoctorId] = useState(null);
+
+  let [doctorUsers, setDoctorUsers] = useState([]);
+  let [userId, setUserId] = useState("");
+  let [userIdError, setUserIdError] = useState("");
 
   const [file, setFile] = useState(null);
   let [allDoctors, setAllDoctors] = useState([]);
@@ -61,13 +73,24 @@ function Doctors() {
 
       let formData = new FormData();
 
+
+
       formData.append(
         "doctor",
-        new Blob([JSON.stringify(doctorDetails)], { type: "application/json" })
+        new Blob([JSON.stringify(doctorDetails)], { type: "application/json" }),
       );
       formData.append("file", file);
 
-      let res = await createDoctor(formData);
+      if(!userId){
+        
+        setUserIdError("Please select user for doctor");
+        setLoading(false);
+        return;
+      }
+
+      let res = await createDoctor(userId, formData);
+      console.log(res.status);
+
       if (res.status === 200) {
         setLoading(false);
         setdoctorDetails({
@@ -75,17 +98,55 @@ function Doctors() {
           specialization: "",
           fee: "",
         });
+        setValidationsError({
+          departmentId: "",
+          doctorName: "",
+          email: "",
+          fee: "",
+          specialization: "",
+        });
         fetchAllDoctors();
         addDoctorModel.setOff();
         alert(res.data.message);
       }
     } catch (error) {
-      console.log(error);
       setLoading(false);
+      console.log(error.response);
+
+       if (error.response.status === 409){
+        alert(error.response.data.message)
+
+       }
+      
+      if (error.response.status === 400) {
+        setLoading(false);
+        
+       
+
+        setValidationsError({
+          departmentId: error.response.data.departmentId,
+          doctorName: error.response.data.doctorName,
+          email: error.response.data.email,
+          fee: error.response.data.fee,
+          specialization: error.response.data.specialization,
+        });
+      }
     }
 
     // Handle form submission, such as sending the data to an API
   };
+
+  let submitCancel = () => {
+    addDoctorModel.setOff();
+    setValidationsError({
+      departmentId: "",
+      doctorName: "",
+      email: "",
+      fee: "",
+      specialization: "",
+    });
+  };
+
   let fetchAllDoctors = async () => {
     let res = await getAllDoctors();
     if (res.status === 200) {
@@ -98,6 +159,7 @@ function Doctors() {
   useEffect(() => {
     fetchAllDoctors();
     fetchAllDepartment();
+    fetchAllDoctorUser();
   }, []);
   let handleNextPage = () => {
     if (isLast) setCurrentPage(0);
@@ -114,7 +176,7 @@ function Doctors() {
       if (res.status === 200) {
         alert("doctor deleted successfully");
         let filteredDoctors = allDoctors.filter(
-          (doctor) => doctor.doctorId !== doctorId
+          (doctor) => doctor.doctorId !== doctorId,
         );
         setAllDoctors(filteredDoctors);
       }
@@ -154,7 +216,7 @@ function Doctors() {
         let updatedList = allDoctors.map((doctor) =>
           doctor.doctorId === currentDoctorId
             ? { ...doctor, ...updateDoctorDetails }
-            : doctor
+            : doctor,
         );
         setAllDoctors(updatedList);
         setUpdateDoctorDetails({
@@ -173,6 +235,17 @@ function Doctors() {
     }
   };
 
+  let fetchAllDoctorUser = async () => {
+    try {
+      let res = await getUserByRole("DOCTOR");
+      if (res.status === 200) {
+        setDoctorUsers(res.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       {" "}
@@ -181,7 +254,7 @@ function Doctors() {
           title="Doctors"
           path={location.pathname}
         ></DashboardHeader>
-        <div className="w-full   p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+        <div className="w-full   p-4 bg-white rounded-xl lg:px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
           <div className="flex justify-between">
             <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
               All Doctors
@@ -204,7 +277,7 @@ function Doctors() {
               </button>
             </div>
           </div>
-          <div className="mt-5 overflow-x-auto outline-2 outline-gray-200 rounded-lg">
+          <div className="mt-5 overflow-x-auto outline-2 outline-gray-200 rounded-lg hidden lg:block">
             <table className="w-full ">
               <thead className="bg-[#f8f9fa] text-[#2c3e50]">
                 <tr className="border-b border-gray-300">
@@ -271,7 +344,7 @@ function Doctors() {
                           onClick={() =>
                             handleEditDoctor(
                               doctor,
-                              doctor.departmentResponseDTO.departId
+                              doctor.departmentResponseDTO.departId,
                             )
                           }
                           className="bg-green-500 text-white cursor-pointer px-4 py-1 rounded-2xl text-[10px]"
@@ -285,11 +358,67 @@ function Doctors() {
               </tbody>
             </table>
           </div>
+          <div className="card-wrapper w-full p-1 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4  mt-5 lg:hidden">
+            {allDoctors &&
+              allDoctors.map((doctor, index) => (
+                <div
+                  key={index}
+                  className="card h-full w-full   rounded overflow-hidden transition-all duration-300 shadow-[0px_8px_10px_rgba(0,0,0,0.1)] hover:shadow-[0px_8px_10px_rgba(0,0,0,0.2)]"
+                >
+                  <div className="aspect-square overflow-hidden">
+                    <img
+                      src={`http://localhost:8080/file/${doctor.profilePhotoUrl}`}
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div className="bg-white p-1 text-gray-900">
+                    <h1 className=" text-sm lg:text-base ">
+                      <span className="font-semibold">Name : </span>
+                      {doctor.doctorName}
+                    </h1>
+                    <h1 className=" text-sm lg:text-base mb-2 ">
+                      <span className=" font-[500]">Specialization : </span>
+                      <span className="text-[#06adaa] ">
+                        {doctor.specialization}
+                      </span>
+                    </h1>
+                    <h1 className="break-all leading-4 text-sm lg:text-base mb-2">
+                      <span className="font-semibold">Email : </span>
+                      {doctor.email}
+                    </h1>
+                    <h1 className=" text-sm lg:text-base ">
+                      <span className="font-semibold">Fee : </span>{" "}
+                      <span className="text-green-700">{doctor.fee}</span>
+                    </h1>
+                    <div className=" flex justify-around mt-5">
+                      <button
+                        onClick={() => handleDeleteUser(doctor.doctorId)}
+                        className="bg-red-500 text-white cursor-pointer px-6 py-1.5 mr-2 rounded text-[10px]"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleEditDoctor(
+                            doctor,
+                            doctor.departmentResponseDTO.departId,
+                          )
+                        }
+                        className="bg-green-500 text-white cursor-pointer px-6 py-1  rounded text-[10px]"
+                      >
+                        Edit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
         </div>
         {/* ==========    ADD DOCTOR ========== */}
         {addDoctorModel.value && (
           <div className="add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
-            <div className="bg-white p-7 rounded md:w-1/2 lg:w-1/3">
+            <div className="bg-white p-7  w-full h-full">
               {!loading ? (
                 <>
                   <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
@@ -297,107 +426,152 @@ function Doctors() {
                   </h3>
 
                   <form onSubmit={handleSubmit} className="space-y-4 ">
-                    {/* Email */}
-                    <div>
-                      <label className="block text-sm font-[500] text-gray-600 mb-1">
-                        Doctor Name :
-                      </label>
-                      <input
-                        type="text"
-                        name="doctorName"
-                        required
-                        value={doctorDetails.doctorName}
-                        onChange={handleChange}
-                        placeholder="Enter username"
-                        className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Email :
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={doctorDetails.email}
-                        onChange={handleChange}
-                        placeholder="example@gmail.com"
-                        required
-                        className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Specialization :
-                      </label>
-                      <input
-                        type="text"
-                        name="specialization"
-                        value={doctorDetails.specialization}
-                        onChange={handleChange}
-                        placeholder="Enter specialization"
-                        required
-                        className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                      />
-                    </div>
-                    <div>
-                      <select
-                        name="departmentId"
-                        onChange={handleChange}
-                        value={doctorDetails.departmentId}
-                        className="w-full text-gray-500 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                      >
-                        <option value="">Select Department</option>
-                        {allDepartment.map((department, index) => (
-                          <option key={index} value={department.departId}>
-                            {department.departmentName}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    {/* Profile Photo */}
-                    <div>
-                      <label
-                        htmlFor="profilePhoto"
-                        className="block text-gray-700 font-medium mb-1"
-                      >
-                        Profile Photo
-                      </label>
-                      <input
-                        type="file"
-                        name="profilePhoto"
-                        id="profilePhoto"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        required
-                        className="w-full text-gray-700 cursor-pointer"
-                      />
-                    </div>
-                    {/* Fee */}
-                    <div>
-                      <label
-                        htmlFor="fee"
-                        className="block text-gray-700 font-medium mb-1"
-                      >
-                        Consultation Fee
-                      </label>
-                      <input
-                        type="number"
-                        name="fee"
-                        id="fee"
-                        value={doctorDetails.fee}
-                        onChange={handleChange}
-                        placeholder="Enter Fee "
-                        required
-                        className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500"
-                      />
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                      {/* Email */}
+                      <div>
+                        <label className="block text-sm font-[500] text-gray-600 mb-1">
+                          Doctor Name :
+                        </label>
+                        <input
+                          type="text"
+                          name="doctorName"
+                          value={doctorDetails.doctorName}
+                          onChange={handleChange}
+                          placeholder="Enter username"
+                          className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                        />
+                        {validationsError.doctorName && (
+                          <>
+                            <span className="text-red-500 text-sm">
+                              {validationsError.doctorName}
+                            </span>
+                          </>
+                        )}
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Specialization :
+                        </label>
+                        <input
+                          type="text"
+                          name="specialization"
+                          value={doctorDetails.specialization}
+                          onChange={handleChange}
+                          placeholder="Enter specialization"
+                          className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                        />
+                        {validationsError.specialization && (
+                          <>
+                            <span className="text-red-500 text-sm">
+                              {validationsError.specialization}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                      <div>
+                        <select
+                          name="departmentId"
+                          onChange={handleChange}
+                          value={doctorDetails.departmentId}
+                          className="w-full text-gray-500 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                        >
+                          <option value="">Select Department</option>
+                          {allDepartment.map((department, index) => (
+                            <option key={index} value={department.departId}>
+                              {department.departmentName}
+                            </option>
+                          ))}
+                        </select>
+                        {validationsError.departmentId && (
+                          <>
+                            <span className="text-red-500 text-sm">
+                              {validationsError.departmentId}
+                            </span>
+                          </>
+                        )}
+                      </div>
+
+                      {/* Fee */}
+                      <div>
+                        <label
+                          htmlFor="fee"
+                          className="block text-gray-700 font-medium mb-1"
+                        >
+                          Consultation Fee
+                        </label>
+                        <input
+                          type="number"
+                          name="fee"
+                          id="fee"
+                          value={doctorDetails.fee}
+                          onChange={handleChange}
+                          placeholder="Enter Fee "
+                          className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500"
+                        />
+                        {validationsError.fee && (
+                          <>
+                            <span className="text-red-500 text-sm">
+                              {validationsError.fee}
+                            </span>
+                          </>
+                        )}
+                      </div>
+
+                      {/* SELECT USER FOR DOCTOR  */}
+
+                      <div>
+                        <select
+                          onChange={(e) => setUserId(Number(e.target.value))}
+                          value={userId}
+                          className="w-full text-gray-500 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                        >
+                          <option value="">Select User for doctor</option>
+                          {doctorUsers.map((user, index) => (
+                            <option key={index} value={user.id}>
+                              {user.username}
+                            </option>
+                          ))}
+                        </select>
+                        {userIdError && (<>{
+                            <span className="text-red-500 text-sm">
+                              {userIdError}
+                            </span>
+
+                        }
+                        </>)}
+                        {validationsError.departmentId && (
+                          <>
+                            <span className="text-red-500 text-sm">
+                              {validationsError.departmentId}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                      {/* Profile Photo */}
+                      <div>
+                        <label
+                          htmlFor="profilePhoto"
+                          className="block text-gray-700 font-medium mb-1"
+                        >
+                          Profile Photo
+                        </label>
+                        <input
+                          type="file"
+                          name="profilePhoto"
+                          id="profilePhoto"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          className="w-full text-gray-700 cursor-pointer"
+                        />
+                      </div>
                     </div>
 
                     {/* Submit Button */}
-                    <div className="flex justify-end gap-x-5 mt-8">
+                    <div className="flex justify-center gap-x-5 mt-18">
                       <button
                         type="button"
-                        onClick={addDoctorModel.setOff}
+                        onClick={submitCancel}
                         className="cursor-pointer w-1/3 bg-[#707070] text-white py-2 rounded-md font-semibold hover:bg-[#565656] transition duration-300"
                       >
                         cencel

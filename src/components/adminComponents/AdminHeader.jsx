@@ -30,7 +30,7 @@ function AdminHeader() {
   let [activeIndex, setActiveIndex] = useState(1);
   return (
     <>
-      <header className="admin-header outline py-2 bg-white outline-gray-300">
+      <header className="admin-header outline-1 z-50 py-1 bg-white outline-gray-300">
         <div className="container flex flex-row-reverse lg:flex-row justify-between items-center">
           <div className=" lg:flex items-center gap-x-6 hidden">
             <div className="lg:flex gap-x-2 items-center hidden">
@@ -65,13 +65,13 @@ function AdminHeader() {
             </button>
           </div>
           <div className="flex items-center gap-x-3">
-            <div className="outline-2 outline-blue-600 p-0.5  rounded-full overflow-hidden size-10">
+            {/* <div className="outline-2 outline-blue-600 p-0.5  rounded-full overflow-hidden size-10">
               <img
                 src={doctorimg}
                 alt=""
                 className=" object-cover rounded-full"
               />
-            </div>
+            </div> */}
             <div>
               <h3 className="font-semibold text-sm lg:text-[1.1rem] text-gray-700">
                 {user.username}
@@ -109,7 +109,7 @@ function AdminHeader() {
                   onClick={() => {
                     setActiveIndex(1);
                     setOpenMenu(null);
-                    mobileMenuToggle.setOff()
+                    mobileMenuToggle.setOff();
                   }}
                   to={"/admin/dashboard"}
                   className={`flex justify-between items-center p-2  rounded-lg text-gray-600 ${
