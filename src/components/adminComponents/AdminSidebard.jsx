@@ -15,7 +15,6 @@ function AdminSidebard() {
   let {
     logout,
     addUserModel,
-    addDoctorModel,
     makeScheduleModel,
     createDepartModel,
     makeAppointmentModel,
@@ -40,8 +39,9 @@ function AdminSidebard() {
                     setOpenMenu(null);
                   }}
                   to={"/admin/dashboard"}
-                  className={`flex justify-between items-center p-2  rounded-lg text-gray-600 ${activeIndex === 1 ? "active" : ""
-                    }`}
+                  className={`flex justify-between items-center p-2  rounded-lg text-gray-600 ${
+                    activeIndex === 1 ? "active" : ""
+                  }`}
                 >
                   <div className="flex justify-center items-center gap-x-3">
                     <LuLayoutDashboard className="text-2xl" />
@@ -51,13 +51,14 @@ function AdminSidebard() {
               </li>
               <li
                 onClick={() => {
-                  setOpenMenu(openMenu === 1 ? null : 1), setActiveIndex(2);
+                  (setOpenMenu(openMenu === 1 ? null : 1), setActiveIndex(2));
                 }}
               >
                 <Link
                   to={"/admin/dashboard/users"}
-                  className={`flex justify-between items-center p-2 text-gray-600  rounded-lg ${activeIndex === 2 ? "active" : ""
-                    }`}
+                  className={`flex justify-between items-center p-2 text-gray-600  rounded-lg ${
+                    activeIndex === 2 ? "active" : ""
+                  }`}
                 >
                   {/* Dropdown Toggle Button */}
                   <div className="flex justify-center items-center gap-x-3">
@@ -66,19 +67,21 @@ function AdminSidebard() {
                   </div>
                   <span>
                     <FaAngleRight
-                      className={`${openMenu === 1
+                      className={`${
+                        openMenu === 1
                           ? " rotate-90 text-blue-600 "
                           : "rotate-0"
-                        } transition-all duration-200`}
+                      } transition-all duration-200`}
                     />
                   </span>
                 </Link>
 
                 <div
-                  className={`  pl-5 ${openMenu === 1
+                  className={`  pl-5 ${
+                    openMenu === 1
                       ? "max-h-20 opacity-100 before:max-h-20 mb-3 "
                       : " max-h-0 opacity-0 before:max-h-0 "
-                    } relative transition-all ease-in-out duration-300  before:transition-all  before:ease-in-out   before:duration-200  overflow-hidden before:content-[''] before:absolute  before:w-[2px]  before:bg-gray-300 before:my-2`}
+                  } relative transition-all ease-in-out duration-300  before:transition-all  before:ease-in-out   before:duration-200  overflow-hidden before:content-[''] before:absolute  before:w-[2px]  before:bg-gray-300 before:my-2`}
                 >
                   <ul className="pl-4">
                     <li className="  rounded-lg">
@@ -112,35 +115,35 @@ function AdminSidebard() {
               <li>
                 <Link
                   onClick={() => {
-                    setActiveIndex(3), setOpenMenu(openMenu === 2 ? null : 2);
+                    (setActiveIndex(3), setOpenMenu(openMenu === 2 ? null : 2));
                   }}
                   to={"/admin/dashboard/doctors"}
-                  className={`flex justify-between items-center p-2  text-gray-600 rounded-lg ${activeIndex === 3 ? "active" : ""
-                    }`}
+                  className={`flex justify-between items-center p-2  text-gray-600 rounded-lg ${
+                    activeIndex === 3 ? "active" : ""
+                  }`}
                 >
                   <div className="flex justify-center items-center gap-x-3">
                     <FaUserDoctor className="text-2xl" />
                     <span className="text-[16px] font-medium">Doctors</span>
                   </div>
                   <span
-                    className={`${openMenu === 2 ? " rotate-90 text-blue-600 " : "rotate-0"
-                      } transition-all duration-200`}
+                    className={`${
+                      openMenu === 2 ? " rotate-90 text-blue-600 " : "rotate-0"
+                    } transition-all duration-200`}
                   >
                     <FaAngleRight />
                   </span>
                 </Link>
                 <div
-                  className={`  pl-5 ${openMenu === 2
+                  className={`  pl-5 ${
+                    openMenu === 2
                       ? "max-h-20 opacity-100 before:max-h-20 mb-3 "
                       : " max-h-0 opacity-0 before:max-h-0 "
-                    } relative transition-all ease-in-out duration-300  before:transition-all  before:ease-in-out   before:duration-200  overflow-hidden before:content-[''] before:absolute  before:w-[2px]  before:bg-gray-300 before:my-2`}
+                  } relative transition-all ease-in-out duration-300  before:transition-all  before:ease-in-out   before:duration-200  overflow-hidden before:content-[''] before:absolute  before:w-[2px]  before:bg-gray-300 before:my-2`}
                 >
                   <ul className="pl-4">
                     <li className="  rounded-lg">
-                      <button
-                        onClick={addDoctorModel.toggle}
-                        className="flex justify-between items-center p-1"
-                      >
+                      <button className="flex justify-between items-center p-1">
                         <div className="flex justify-center items-center gap-x-3">
                           <IoMdPersonAdd className="text-[16px]" />
                           <span className="text-[13px] font-medium">
@@ -155,28 +158,31 @@ function AdminSidebard() {
               <li>
                 <Link
                   onClick={() => {
-                    setActiveIndex(4), setOpenMenu(openMenu === 3 ? null : 3);
+                    (setActiveIndex(4), setOpenMenu(openMenu === 3 ? null : 3));
                   }}
                   to={"/admin/dashboard/patients"}
-                  className={`flex justify-between items-center p-2  text-gray-600 rounded-lg ${activeIndex === 4 ? "active" : ""
-                    }`}
+                  className={`flex justify-between items-center p-2  text-gray-600 rounded-lg ${
+                    activeIndex === 4 ? "active" : ""
+                  }`}
                 >
                   <div className="flex justify-center items-center gap-x-3">
                     <FaUserDoctor className="text-2xl" />
                     <span className="text-[16px] font-medium">Patients</span>
                   </div>
                   <span
-                    className={`${openMenu === 3 ? " rotate-90 text-blue-600 " : "rotate-0"
-                      } transition-all duration-200`}
+                    className={`${
+                      openMenu === 3 ? " rotate-90 text-blue-600 " : "rotate-0"
+                    } transition-all duration-200`}
                   >
                     <FaAngleRight />
                   </span>
                 </Link>
                 <div
-                  className={`  pl-5 ${openMenu === 3
+                  className={`  pl-5 ${
+                    openMenu === 3
                       ? "max-h-20 opacity-100 before:max-h-20 mb-3 "
                       : " max-h-0 opacity-0 before:max-h-0 "
-                    } relative transition-all ease-in-out duration-300  before:transition-all  before:ease-in-out   before:duration-200  overflow-hidden before:content-[''] before:absolute  before:w-[2px]  before:bg-gray-300 before:my-2`}
+                  } relative transition-all ease-in-out duration-300  before:transition-all  before:ease-in-out   before:duration-200  overflow-hidden before:content-[''] before:absolute  before:w-[2px]  before:bg-gray-300 before:my-2`}
                 >
                   <ul className="pl-4">
                     <li className="  rounded-lg">
@@ -199,10 +205,11 @@ function AdminSidebard() {
                 <Link
                   to={"/admin/dashboard/appointments"}
                   onClick={() => {
-                    setActiveIndex(5), setOpenMenu(openMenu === 4 ? null : 4);
+                    (setActiveIndex(5), setOpenMenu(openMenu === 4 ? null : 4));
                   }}
-                  className={`flex justify-between items-center p-2 text-gray-600  rounded-lg ${activeIndex === 5 ? "active" : ""
-                    }`}
+                  className={`flex justify-between items-center p-2 text-gray-600  rounded-lg ${
+                    activeIndex === 5 ? "active" : ""
+                  }`}
                 >
                   <div className="flex justify-center items-center gap-x-3">
                     <TbFileInvoice className="text-2xl" />
@@ -211,17 +218,19 @@ function AdminSidebard() {
                     </span>
                   </div>
                   <span
-                    className={`${openMenu === 4 ? " rotate-90 text-blue-600 " : "rotate-0"
-                      } transition-all duration-200`}
+                    className={`${
+                      openMenu === 4 ? " rotate-90 text-blue-600 " : "rotate-0"
+                    } transition-all duration-200`}
                   >
                     <FaAngleRight />
                   </span>
                 </Link>
                 <div
-                  className={`  pl-5 ${openMenu === 4
+                  className={`  pl-5 ${
+                    openMenu === 4
                       ? "max-h-20 opacity-100 before:max-h-20 mb-3 "
                       : " max-h-0 opacity-0 before:max-h-0 "
-                    } relative transition-all ease-in-out duration-300  before:transition-all  before:ease-in-out   before:duration-200  overflow-hidden before:content-[''] before:absolute  before:w-[2px]  before:bg-gray-300 before:my-2`}
+                  } relative transition-all ease-in-out duration-300  before:transition-all  before:ease-in-out   before:duration-200  overflow-hidden before:content-[''] before:absolute  before:w-[2px]  before:bg-gray-300 before:my-2`}
                 >
                   <ul className="pl-4">
                     <li className="  rounded-lg">
@@ -244,10 +253,11 @@ function AdminSidebard() {
                 <Link
                   to={"/admin/dashboard/doctor-schedule"}
                   onClick={() => {
-                    setActiveIndex(6), setOpenMenu(openMenu === 5 ? null : 5);
+                    (setActiveIndex(6), setOpenMenu(openMenu === 5 ? null : 5));
                   }}
-                  className={`flex justify-between items-center p-2 text-gray-600  rounded-lg ${activeIndex === 6 ? "active" : ""
-                    }`}
+                  className={`flex justify-between items-center p-2 text-gray-600  rounded-lg ${
+                    activeIndex === 6 ? "active" : ""
+                  }`}
                 >
                   <div className="flex justify-center items-center gap-x-3">
                     <TbFileInvoice className="text-2xl" />
@@ -256,17 +266,19 @@ function AdminSidebard() {
                     </span>
                   </div>
                   <span
-                    className={`${openMenu === 5 ? " rotate-90 text-blue-600 " : "rotate-0"
-                      } transition-all duration-200`}
+                    className={`${
+                      openMenu === 5 ? " rotate-90 text-blue-600 " : "rotate-0"
+                    } transition-all duration-200`}
                   >
                     <FaAngleRight />
                   </span>
                 </Link>
                 <div
-                  className={`  pl-5 ${openMenu === 5
+                  className={`  pl-5 ${
+                    openMenu === 5
                       ? "max-h-20 opacity-100 before:max-h-20 mb-3 "
                       : " max-h-0 opacity-0 before:max-h-0 "
-                    } relative transition-all ease-in-out duration-300  before:transition-all  before:ease-in-out   before:duration-200  overflow-hidden before:content-[''] before:absolute  before:w-[2px]  before:bg-gray-300 before:my-2`}
+                  } relative transition-all ease-in-out duration-300  before:transition-all  before:ease-in-out   before:duration-200  overflow-hidden before:content-[''] before:absolute  before:w-[2px]  before:bg-gray-300 before:my-2`}
                 >
                   <ul className="pl-4">
                     <li className="  rounded-lg">
@@ -289,27 +301,30 @@ function AdminSidebard() {
                 <Link
                   to={"/admin/dashboard/department"}
                   onClick={() => {
-                    setActiveIndex(7), setOpenMenu(openMenu === 6 ? null : 6);
+                    (setActiveIndex(7), setOpenMenu(openMenu === 6 ? null : 6));
                   }}
-                  className={`flex justify-between items-center p-2 text-gray-600  rounded-lg ${activeIndex === 7 ? "active" : ""
-                    }`}
+                  className={`flex justify-between items-center p-2 text-gray-600  rounded-lg ${
+                    activeIndex === 7 ? "active" : ""
+                  }`}
                 >
                   <div className="flex justify-center items-center gap-x-3">
                     <TbFileInvoice className="text-2xl" />
                     <span className="text-[16px] font-medium">Department</span>
                   </div>
                   <span
-                    className={`${openMenu === 6 ? " rotate-90 text-blue-600 " : "rotate-0"
-                      } transition-all duration-200`}
+                    className={`${
+                      openMenu === 6 ? " rotate-90 text-blue-600 " : "rotate-0"
+                    } transition-all duration-200`}
                   >
                     <FaAngleRight />
                   </span>
                 </Link>
                 <div
-                  className={`  pl-5 ${openMenu === 6
+                  className={`  pl-5 ${
+                    openMenu === 6
                       ? "max-h-20 opacity-100 before:max-h-20 mb-3 "
                       : " max-h-0 opacity-0 before:max-h-0 "
-                    } relative transition-all ease-in-out duration-300  before:transition-all  before:ease-in-out   before:duration-200  overflow-hidden before:content-[''] before:absolute  before:w-[2px]  before:bg-gray-300 before:my-2`}
+                  } relative transition-all ease-in-out duration-300  before:transition-all  before:ease-in-out   before:duration-200  overflow-hidden before:content-[''] before:absolute  before:w-[2px]  before:bg-gray-300 before:my-2`}
                 >
                   <ul className="pl-4">
                     <li className="  rounded-lg">

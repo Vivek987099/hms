@@ -162,7 +162,6 @@ function AuthProvider({ children }) {
 
   // Custom toggles for modals
 
-  let addDoctorModel = useToggle(false);
   let addUserModel = useToggle(false);
   let makeScheduleModel = useToggle(false);
   let createDepartModel = useToggle(false);
@@ -185,7 +184,6 @@ function AuthProvider({ children }) {
         loading,
         logout,
         addUserModel,
-        addDoctorModel,
         makeScheduleModel,
         createDepartModel,
         editDepartModel,

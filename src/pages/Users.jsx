@@ -12,7 +12,8 @@ import {
 
 function Users() {
   let location = useLocation();
-  let { addUserModel, user ,allDepartment,fetchAllDepartment} = useContext(AuthContext);
+  let { addUserModel, user, allDepartment, fetchAllDepartment } =
+    useContext(AuthContext);
   let [step, setStep] = useState(1);
   let [doctorRole, setDoctorRole] = useState(false);
 
@@ -53,28 +54,71 @@ function Users() {
       setdoctorDetails({ ...doctorDetails, [name]: value });
     }
 
-    if(name==='profilePhoto'){
-      setFile(e.target.files[0])
+    if (name === "profilePhoto") {
+      setFile(e.target.files[0]);
     }
   };
 
   let handleSendOtp = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    let formData = new FormData();
-    formData.append("user", new Blob([JSON.stringify(userDetails)],{type:"application/json"}))
-    formData.append('doctor',new Blob([JSON.stringify(doctorDetails)],{type:'application/json'}))
-    formData.append('file',file)
-   for(let [key,value] of formData.entries()){
-    console.log(`${key} : ${value}`)
-   }
-    
-     let res = await addNewUser(formData);
-     if(res.status === 200){
-      alert("OTP sent to registered email");
-     }
+      setLoading(true);
 
-    
+      let formData = new FormData();
+      formData.append(
+        "user",
+        new Blob([JSON.stringify(userDetails)], { type: "application/json" }),
+      );
+
+      if(!userDetails.role.trim()){
+        alert("Please select user role")
+        setLoading(false);
+        return
+      }
+
+      if(doctorRole){
+        if(
+            doctorDetails.doctorName.trim() === "" ||
+        doctorDetails.specialization.trim() === "" ||
+        doctorDetails.fee.trim() === "" ||
+        doctorDetails.departmentId.trim() === ""
+
+        ){
+            alert("Please fill all doctor details")
+              setLoading(false);
+              return
+        }
+      }
+
+      if (
+        doctorDetails.doctorName.trim() !== "" &&
+        doctorDetails.specialization.trim() !== "" &&
+        doctorDetails.fee.trim() !== "" &&
+        doctorDetails.departmentId.trim() !== ""
+      ) {
+        formData.append(
+          "doctor",
+          new Blob([JSON.stringify(doctorDetails)], {
+            type: "application/json",
+          }),
+        );
+        formData.append("file", file);
+      }
+
+
+      let res = await addNewUser(formData);
+      if (res.status === 200) {
+        setLoading(false);
+        setMessage(res.data.message);
+        setStep(2);
+      }
+    } catch (error) {
+      setLoading(false);
+      if(error.response.status === 400){
+        alert(error.response.data.message)
+      }
+    }
   };
 
   let handleVerifyOTP = async (e) => {
@@ -104,8 +148,10 @@ function Users() {
         alert("User Registered successfully");
       }
     } catch (error) {
-      console.log(error);
       setLoading(false);
+      if (error.response.status === 400) {
+        alert(error.response.data.message);
+      }
     }
   };
   let fetchAllUsers = async () => {
@@ -120,7 +166,7 @@ function Users() {
   };
   useEffect(() => {
     fetchAllUsers();
-    fetchAllDepartment()
+    fetchAllDepartment();
   }, []);
 
   let handleDeleteUser = async (id) => {
@@ -247,7 +293,6 @@ function Users() {
                             value={userDetails.username}
                             onChange={handleChange}
                             name="username"
-                            required
                             placeholder="Enter username"
                             className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
                           />
@@ -259,7 +304,6 @@ function Users() {
                           <input
                             type="password"
                             name="password"
-                            required
                             onChange={handleChange}
                             value={userDetails.password}
                             placeholder="Enter password"
@@ -281,6 +325,13 @@ function Users() {
                                 id="admin"
                                 onChange={(e) => {
                                   (setDoctorRole(false),
+                                    setdoctorDetails({
+                                      doctorName: "",
+                                      specialization: "",
+                                      fee: "",
+                                      departmentId: "",
+                                    }),
+                                    setFile(null),
                                     setUserDetails({
                                       ...userDetails,
                                       role: e.target.value,
@@ -359,11 +410,14 @@ function Users() {
                                   className="w-full text-gray-500 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
                                 >
                                   <option value="">Select Department</option>
-                                   {allDepartment.map((department, index) => (
-                            <option key={index} value={department.departId}>
-                              {department.departmentName}
-                            </option>
-                          ))}
+                                  {allDepartment.map((department, index) => (
+                                    <option
+                                      key={index}
+                                      value={department.departId}
+                                    >
+                                      {department.departmentName}
+                                    </option>
+                                  ))}
                                 </select>
                               </div>
 
@@ -392,9 +446,9 @@ function Users() {
                               <div>
                                 <label
                                   htmlFor="profilePhoto"
-                                  className="block text-gray-700 font-medium mb-1"
+                                  className="block text-white px-5 py-1.5 cursor-pointer font-medium mb-1 bg-[#06adaa]"
                                 >
-                                  Profile Photo
+                                  Select Profile Photo
                                 </label>
                                 <input
                                   type="file"
