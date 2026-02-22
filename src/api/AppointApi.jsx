@@ -2,7 +2,7 @@ import axios from "axios";
 
 
 const Appointment = axios.create({
-  baseURL: "http://localhost:8080/api/appointment",
+  baseURL: "https://hms-backend-production-d710.up.railway.app",
   withCredentials:true
 });
 
