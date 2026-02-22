@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const doctor_Schedule = axios.create({
-  baseURL: "https://hms-backend-production-d710.up.railway.app",
+  baseURL: "https://hms-backend-production-d710.up.railway.app/doctor-schedule",
   withCredentials: true,
 });
 

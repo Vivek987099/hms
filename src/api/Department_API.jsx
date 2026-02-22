@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const department=  axios.create({
-    baseURL: "https://hms-backend-production-d710.up.railway.app",
+    baseURL: "https://hms-backend-production-d710.up.railway.app/department",
     withCredentials: true,
 })
 
