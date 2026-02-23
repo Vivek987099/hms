@@ -33,7 +33,7 @@ function DoctorAppointment() {
   let fetchAllAppointments = async () => {
     try {
       let pageSize = 10;
-      let res = await getAppointmentByDoctor();
+      let res = await getAppointmentByDoctor(sessionStorage.getItem("token"));
       if (res.status === 200) {
         setAllAppointments(res.data);
         // setIsLast(res.data.last);

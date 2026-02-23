@@ -107,7 +107,7 @@ function Users() {
       }
 
 
-      let res = await addNewUser(formData);
+      let res = await addNewUser(formData,sessionStorage.getItem("token"));
       if (res.status === 200) {
         setLoading(false);
         setMessage(res.data.message);
@@ -130,7 +130,7 @@ function Users() {
 
     try {
       setLoading(true);
-      let res = await verifyUserOtp(verifyDetails);
+      let res = await verifyUserOtp(verifyDetails,sessionStorage.getItem("token"));
       console.log(res.data);
       `user id ${res.data}`;
       if (res.status === 200) {
@@ -156,7 +156,7 @@ function Users() {
   };
   let fetchAllUsers = async () => {
     try {
-      let res = await getAllUsers(10, 0);
+      let res = await getAllUsers(10, 0,sessionStorage.getItem("token"));
       if (res.status === 200) {
         setAllUser(res.data.content);
       }
@@ -171,7 +171,7 @@ function Users() {
 
   let handleDeleteUser = async (id) => {
     try {
-      let res = await deleteUserById(id);
+      let res = await deleteUserById(id,sessionStorage.getItem("token"));
       if (res.status === 200) {
         //update user list
         let updatedUsers = allUser.filter((user) => user.id !== id);

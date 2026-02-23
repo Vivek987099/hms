@@ -88,7 +88,7 @@ function Doctors() {
         return;
       }
 
-      let res = await createDoctor(userId, formData);
+      let res = await createDoctor(userId, formData,sessionStorage.getItem("token"));
       console.log(res.status);
 
       if (res.status === 200) {
@@ -148,7 +148,7 @@ function Doctors() {
   };
 
   let fetchAllDoctors = async () => {
-    let res = await getAllDoctors();
+    let res = await getAllDoctors(sessionStorage.getItem("token"));
     if (res.status === 200) {
       setAllDoctors(res.data.content);
       setIsLast(res.data.last);
@@ -172,7 +172,7 @@ function Doctors() {
 
   let handleDeleteUser = async (doctorId) => {
     try {
-      let res = await deleteDoctorById(doctorId);
+      let res = await deleteDoctorById(doctorId,sessionStorage.getItem("token"));
       if (res.status === 200) {
         alert("doctor deleted successfully");
         let filteredDoctors = allDoctors.filter(
@@ -211,7 +211,7 @@ function Doctors() {
     console.log(currentDoctorId);
     console.log(updateDoctorDetails);
     try {
-      let res = await updateDoctor(currentDoctorId, updateDoctorDetails);
+      let res = await updateDoctor(currentDoctorId, updateDoctorDetails,sessionStorage.getItem("token"));
       if (res.status === 200) {
         let updatedList = allDoctors.map((doctor) =>
           doctor.doctorId === currentDoctorId
@@ -237,7 +237,7 @@ function Doctors() {
 
   let fetchAllDoctorUser = async () => {
     try {
-      let res = await getUserByRole("DOCTOR");
+      let res = await getUserByRole("DOCTOR",sessionStorage.getItem("token"));
       if (res.status === 200) {
         setDoctorUsers(res.data);
       }

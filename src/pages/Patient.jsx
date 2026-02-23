@@ -55,7 +55,7 @@ function Patient() {
 
   const handleSoftDeletePatient = async (id) => {
     try {
-      let res = await softDelete(id);
+      let res = await softDelete(id,sessionStorage.getItem("token"));
       if (res.status === 200) {
         setAllPatients(allPatients.filter((pat) => pat.patientId != id));
         alert(res.data.message);
@@ -76,7 +76,7 @@ function Patient() {
     e.preventDefault();
 
     try {
-      let res = await registerPatient(patientDetails);
+      let res = await registerPatient(patientDetails,sessionStorage.getItem("token"));
       if (res.status === 200) {
         setPatientDetails({
           patientName: "",
@@ -131,7 +131,7 @@ function Patient() {
     e.preventDefault();
 
     try {
-      let res = await updatePatient(currentPatientId, updateDetails);
+      let res = await updatePatient(currentPatientId, updateDetails,sessionStorage.getItem("token"));
       if (res.status === 200) {
         setUpdateDetails({
           patientName: "",

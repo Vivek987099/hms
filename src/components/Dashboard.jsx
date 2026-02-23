@@ -46,17 +46,17 @@ function Dashboard() {
   let navigate = useNavigate();
   useEffect(() => {
     let fetchTotalDoctors = async () => {
-      let res = await getTotalNoDoctor();
+      let res = await getTotalNoDoctor(sessionStorage.getItem("token"));
       if (res.status === 200) {
         setTotalDoctor(res.data);
       }
     };
     let fetchTotalAppointments = async () => {
-      let res = await totalAppointment();
+      let res = await totalAppointment(sessionStorage.getItem("token"));
       setAppointmentsNo(res.data);
     };
     let fetchTotalUser = async () => {
-      let res = await getTotalNoOfUser();
+      let res = await getTotalNoOfUser(sessionStorage.getItem("token"));
       if (res.status === 200) {
         setTotalUserNo(res.data);
       }
@@ -69,20 +69,20 @@ function Dashboard() {
       }
     };
     let fetchAppointmentStatus = async () => {
-      let res = await appointmentStatusCount();
+      let res = await appointmentStatusCount(sessionStorage.getItem("token"));
       if (res.status === 200) {
         setApmntStatusCount(res.data);
       }
     };
     let fetchMonthwisePatient = async () => {
-      let res = await getMonthwisePatient();
+      let res = await getMonthwisePatient(sessionStorage.getItem("token"));
       if (res.status === 200) {
         setMonthwisePatients(res.data);
       }
     };
     let fetchRecentPatients = async () => {
       try {
-        let res = await getRecentPatients();
+        let res = await getRecentPatients(sessionStorage.getItem("token"));
         if (res.status === 200) {
           setRecentPatients(res.data);
         }
@@ -92,7 +92,7 @@ function Dashboard() {
     };
     let fetchRecentAppointments = async () => {
       try {
-        let res = await getRecentAppointments();
+        let res = await getRecentAppointments(sessionStorage.getItem("token"));
         if (res.status === 200) {
           setRecentAppointments(res.data);
         }

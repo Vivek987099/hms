@@ -43,7 +43,7 @@ function Department() {
     e.preventDefault();
 
     try {
-      let res = await addDepartment(departmentDetails);
+      let res = await addDepartment(departmentDetails,sessionStorage.getItem("token"));
       if (res.status === 200) {
         alert(res.data.message);
         setDepartmentDetails({
@@ -60,7 +60,7 @@ function Department() {
 
   let handleDelete = async (id) => {
     try {
-      let res = await deleteDepartment(id);
+      let res = await deleteDepartment(id,sessionStorage.getItem("token"));
       if (res.status === 200) {
         let filteredDepartments = allDepartment.filter(
           (department) => department.departId !== id
@@ -89,7 +89,7 @@ function Department() {
   let handleUpdatedData = async (e) => {
     e.preventDefault();
     try {
-      let res = await updateDepartment(currentDepartmentId, currentDepartment);
+      let res = await updateDepartment(currentDepartmentId, currentDepartment,sessionStorage.getItem("token"));
       if (res.status === 200) {
         let updatedList = allDepartment.map((dept) =>
           dept.departId === currentDepartmentId

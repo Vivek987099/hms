@@ -22,7 +22,7 @@ function AuthProvider({ children }) {
 
   let fetchAllDepartment = async () => {
     try {
-      let res = await getAllDepartments();
+      let res = await getAllDepartments(sessionStorage.getItem("token"));
       if (res.status === 200) {
         setAllDepartment(res.data);
       }
@@ -34,7 +34,11 @@ function AuthProvider({ children }) {
   let fetchAllPatients = async () => {
     let pageSize = 10;
     try {
-      let res = await getAllPatients(pageSize, currentPage);
+      let res = await getAllPatients(
+        pageSize,
+        currentPage,
+        sessionStorage.getItem("token"),
+      );
       if (res.status === 200) {
         setAllPatients(res.data.content);
         setIsLast(res.data.last);
@@ -47,32 +51,27 @@ function AuthProvider({ children }) {
 
   let verifyAuth = async () => {
     try {
-      setLoading(true)
-      let response = await checkAuth();
-      if(response.status===200){
-        setIsLoggedIn(response.data.LoggedIn)
-        let profile = await getProfile()
-        if(profile.status===200){
+      setLoading(true);
+      let response = await checkAuth(sessionStorage.getItem("token"));
+      if (response.status === 200) {
+        setIsLoggedIn(response.data.LoggedIn);
+        let profile = await getProfile(sessionStorage.getItem("token"));
+        if (profile.status === 200) {
           setUser({
-              username: profile.data.username,
+            username: profile.data.username,
             role: profile.data.role,
-            status:profile.data.status,
-            createAt:profile.data.createdAt
-          })
-          if(profile.data.role ==='ADMIN'){
+            status: profile.data.status,
+            createAt: profile.data.createdAt,
+          });
+          if (profile.data.role === "ADMIN") {
             navigate("/admin/dashboard");
-
           }
-          if(profile.data.role==='DOCTOR'){
-             navigate("/doctor/dashboard");
-
+          if (profile.data.role === "DOCTOR") {
+            navigate("/doctor/dashboard");
           }
-          setLoading(false)
-
+          setLoading(false);
         }
       }
-
-      
     } catch (error) {
       // if (error.response && error.response.status === 401) {
       //   setUser(null);
@@ -81,7 +80,6 @@ function AuthProvider({ children }) {
       // navigate("/");
       // setLoading(false);
       console.log(error);
-      
     }
   };
 
@@ -93,41 +91,40 @@ function AuthProvider({ children }) {
     setLoading(true);
     try {
       let response = await loginUser(loginDetails);
-      let authResponse = await checkAuth();
-
-      if (response.status === 200 && authResponse.status === 200) {
-        setIsLoggedIn(authResponse.data.LoggedIn);
-
-        let profileResult = await getProfile();
-        if (profileResult.status === 200) {
-          setUser({
-            username: profileResult.data.username,
-            role: profileResult.data.role,
-            status:profileResult.data.status,
-            createAt:profileResult.data.createdAt
-          });
-
-          setLoading(false);
-
-          if (profileResult.data.role === "ADMIN") {
-            navigate("/admin/dashboard");
-          }
-          if (profileResult.data.role === "DOCTOR") {
-            navigate("/doctor/dashboard");
+      if (response.status === 200) {
+        sessionStorage.setItem("token", response.data.token);
+        let authResponse = await checkAuth(sessionStorage.getItem("token"));
+        if (authResponse.status === 200) {
+          if (authResponse.data.LoggedIn) {
+            let profile = await getProfile(sessionStorage.getItem("token"));
+            if (profile.status === 200) {
+              setUser({
+                username: profile.data.username,
+                role: profile.data.role,
+                status: profile.data.status,
+                createAt: profile.data.createdAt,
+              });
+              setLoading(false);
+              if (profile.data.role === "ADMIN") {
+                navigate("/admin/dashboard");
+              }
+              if (profile.data.role === "DOCTOR") {
+                navigate("/doctor/dashboard");
+              }
+              Swal.fire({
+                title: "Login Successful",
+                text: response?.data?.message,
+                icon: "success",
+                confirmButtonText: "OK",
+                customClass: {
+                  confirmButton:
+                    "px-6 py-2 bg-[#06adaa] text-white rounded-md hover:bg-[#08908d] block w-full",
+                },
+                buttonsStyling: false,
+              });
+            }
           }
         }
-
-        Swal.fire({
-          title: "Login Successful",
-          text: response?.data?.message,
-          icon: "success",
-          confirmButtonText: "OK",
-          customClass: {
-            confirmButton:
-              "px-6 py-2 bg-[#06adaa] text-white rounded-md hover:bg-[#08908d] block w-full",
-          },
-          buttonsStyling: false,
-        });
       }
     } catch (error) {
       console.log(error);

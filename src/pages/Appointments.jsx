@@ -47,7 +47,7 @@ function Appointments() {
   let submitStatus = async (e) => {
     try {
       e.preventDefault();
-      let res = await updateStatus(currentAptId, status);
+      let res = await updateStatus(currentAptId, status,sessionStorage.getItem("token"));
       if (res.status === 200) {
         setStatus("");
         fetchAllAppointments();
@@ -72,7 +72,7 @@ function Appointments() {
   let fetchAllAppointments = async () => {
     try {
       let pageSize = 10;
-      let res = await getAllAppointments(changeStatus, pageSize, currentPage);
+      let res = await getAllAppointments(changeStatus, pageSize, currentPage,sessionStorage.getItem("token"));
       if (res.status === 200) {
         setAllAppointments(res.data.content);
         setIsLast(res.data.last);
@@ -117,7 +117,7 @@ function Appointments() {
     setAppointmentDetails({ ...appointmentDetails, doctorId: "" });
 
     try {
-      let res = await getDoctorByDepartment(departmentId);
+      let res = await getDoctorByDepartment(departmentId,sessionStorage.getItem("token"));
       if (res.status === 200) {
         setDoctorByDepartment(res.data);
       }
@@ -131,7 +131,7 @@ function Appointments() {
   let submitAppointmentData = async (e) => {
     e.preventDefault();
     try {
-      let res = await makeAppointment(appointmentDetails);
+      let res = await makeAppointment(appointmentDetails,sessionStorage.getItem("token"));
       if (res.status === 200) {
         setAppointmentDetails({
           date: "",

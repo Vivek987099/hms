@@ -14,7 +14,7 @@ function DoctorProfile() {
 
   let fetchDoctorProfile = async () => {
     try {
-      let res = await getDoctorProfile();
+      let res = await getDoctorProfile(sessionStorage.getItem("token"));
       if (res.status === 200) {
         setProfileDetails({
           name: res.data.doctorName,

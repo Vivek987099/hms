@@ -62,7 +62,7 @@ function Doctor_Schedule() {
   let fetchAllSchedules = async () => {
     try {
       let pageSize = 10;
-      let res = await getDoctorSchedules(day, pageSize, currentPage);
+      let res = await getDoctorSchedules(day, pageSize, currentPage,sessionStorage.getItem("userId"));
       if (res.status === 200) {
         setAllSchedule(res.data.content);
         setIsLast(res.data.last);
@@ -123,7 +123,7 @@ function Doctor_Schedule() {
 
   const handleDeleteSchedule = async (id) => {
     try {
-      let res = await deleteSchedule(id);
+      let res = await deleteSchedule(id,sessionStorage.getItem("token"));
       if (res.status === 200) {
         let filteredSchedule = allSchedules.filter(
           (schedule) => schedule.id != id
@@ -139,7 +139,7 @@ function Doctor_Schedule() {
   useEffect(() => {
     let fetchAllDoctors = async () => {
       try {
-        let res = await allDoctorsWithoutPagination();
+        let res = await allDoctorsWithoutPagination(sessionStorage.getItem("token"));
         if (res.status === 200) {
           setAllDoctors(res.data);
         }
@@ -162,7 +162,7 @@ function Doctor_Schedule() {
   let scheduleDetailsSubmit = async (e) => {
     e.preventDefault();
     try {
-      let res = await createDoctorSchedule(scheduleDetails);
+      let res = await createDoctorSchedule(scheduleDetails,sessionStorage.getItem("token"));
       if (res.status === 200) {
         setScheduleDetails({
           day: "",
