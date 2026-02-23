@@ -10,7 +10,7 @@ function Login() {
     password: "",
   });
 
-  let { login ,loading} = useContext(AuthContext);
+  let { login ,circleLoader} = useContext(AuthContext);
   let handleChange = (e) => {
     const { name, value } = e.target;
     setLoginDetails({
@@ -47,7 +47,7 @@ function Login() {
 
         {
 
-          !loading ?(<>
+          !circleLoader ?(<>
           <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-8">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
             Login To HMS

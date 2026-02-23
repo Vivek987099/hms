@@ -89,7 +89,7 @@ function AuthProvider({ children }) {
   }, []);
 
   let login = async (loginDetails) => {
-    setLoading(true);
+    setCircleLoader(true);
     try {
       let response = await loginUser(loginDetails);
       if (response.status === 200) {
@@ -106,9 +106,7 @@ function AuthProvider({ children }) {
                 status: profile.data.status,
                 createAt: profile.data.createdAt,
               });
-              console.log(profile.data.role);
-              
-                setLoading(false);
+                setCircleLoader(false);
                 if (profile.data.role === "ADMIN") {
                   navigate("/admin/dashboard");
                 }
@@ -132,7 +130,7 @@ function AuthProvider({ children }) {
         }
       }
     } catch (error) {
-      setLoading(false);
+      setCircleLoader(false);
       console.log("error console ");
 
       Swal.fire({
