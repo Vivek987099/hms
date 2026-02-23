@@ -313,7 +313,7 @@ function Doctors() {
                       <div className=" size-12 rounded-full overflow-hidden">
                         <img
                           alt="profile"
-                          src={`http://localhost:8080/file/${doctor.profilePhotoUrl}`}
+                          src={`https://hms-backend-production-d710.up.railway.app/file/${doctor.profilePhotoUrl}`}
                           className="w-full h-auto"
                         />
                       </div>
