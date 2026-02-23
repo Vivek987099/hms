@@ -105,13 +105,11 @@ function Users() {
         );
         formData.append("file", file);
       }
-
-
       let res = await addNewUser(formData,sessionStorage.getItem("token"));
       if (res.status === 200) {
         setLoading(false);
-        setMessage(res.data.message);
-        setStep(2);
+        alert(res.data.message);
+        fetchAllUsers();
       }
     } catch (error) {
       setLoading(false);
@@ -121,39 +119,7 @@ function Users() {
     }
   };
 
-  let handleVerifyOTP = async (e) => {
-    e.preventDefault();
-    let verifyDetails = {
-      username: userDetails.username,
-      otp: OTP,
-    };
-
-    try {
-      setLoading(true);
-      let res = await verifyUserOtp(verifyDetails,sessionStorage.getItem("token"));
-      console.log(res.data);
-      `user id ${res.data}`;
-      if (res.status === 200) {
-        setLoading(false);
-        setStep(1);
-        setOTP("");
-        setUserDetails({
-          username: "",
-          password: "",
-          role: "",
-        });
-        setMessage("");
-        addUserModel.setOff();
-        fetchAllUsers();
-        alert("User Registered successfully");
-      }
-    } catch (error) {
-      setLoading(false);
-      if (error.response.status === 400) {
-        alert(error.response.data.message);
-      }
-    }
-  };
+ 
   let fetchAllUsers = async () => {
     try {
       let res = await getAllUsers(10, 0,sessionStorage.getItem("token"));
@@ -275,8 +241,8 @@ function Users() {
         {addUserModel.value && (
           <>
             <div className="add-user-form add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
-              {step === 1 && (
-                <div className={`bg-white p-7 rounded h-full w-full`}>
+          
+                <div className={`bg-white   h-full w-full p-7`}>
                   {!loading ? (
                     <>
                       <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
@@ -478,51 +444,21 @@ function Users() {
                             type="submit"
                             className="cursor-pointer w-1/3 bg-[#06adaa] text-white py-2 rounded-md font-semibold hover:bg-[#08908d] transition duration-300"
                           >
-                            Send OTP
+                            Create
                           </button>
                         </div>
                       </form>
                     </>
                   ) : (
                     <>
-                      <div className="loader"></div>
-                    </>
-                  )}
-                </div>
-              )}
-              {step === 2 && (
-                <div className=" bg-white p-7 rounded md:w-1/2 lg:w-1/3">
-                  {!loading ? (
-                    <>
-                      <form onSubmit={handleVerifyOTP}>
-                        <div>
-                          <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
-                            Enter OTP
-                          </h3>
-                          <span className="text-[13px] block pb-4 text-gray-600">
-                            {message}
-                          </span>
-                        </div>
+                    <div className="w-full h-full flex justify-center items-center bg-gray-300">
+                     <span class="circle-loader"></span>
 
-                        <Otp otpLength={6} onChangeOtp={setOTP}></Otp>
-                        <div className=" mt-6 flex justify-center items-center">
-                          <button
-                            type="submit"
-                            disabled={loading}
-                            className="cursor-pointer  w-1/3 bg-[#06adaa] text-white py-2 rounded-md font-semibold hover:bg-[#08908d] transition duration-300"
-                          >
-                            Register
-                          </button>
-                        </div>
-                      </form>
-                    </>
-                  ) : (
-                    <>
-                      <div className="loader"></div>
+                    </div>
+                      
                     </>
                   )}
                 </div>
-              )}
             </div>
           </>
         )}
