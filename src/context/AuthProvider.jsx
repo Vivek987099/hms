@@ -64,22 +64,23 @@ function AuthProvider({ children }) {
             status: profile.data.status,
             createAt: profile.data.createdAt,
           });
+          setLoading(false);
           if (profile.data.role === "ADMIN") {
             navigate("/admin/dashboard");
           }
           if (profile.data.role === "DOCTOR") {
             navigate("/doctor/dashboard");
           }
-          setLoading(false);
+          
         }
       }
     } catch (error) {
-      // if (error.response && error.response.status === 401) {
-      //   setUser(null);
-      //   setIsLoggedIn(false);
-      // }
-      // navigate("/");
-      // setLoading(false);
+      if (error.response && error.response.status === 401) {
+        setUser(null);
+        setIsLoggedIn(false);
+      }
+      navigate("/");
+      setLoading(false);
       console.log(error);
     }
   };
