@@ -63,7 +63,7 @@ function Dashboard() {
     };
 
     let fetchTotalPatientNo = async () => {
-      let res = await getTotalPatientNo();
+      let res = await getTotalPatientNo(sessionStorage.getItem("token"));
       if (res.status === 200) {
         setTotalPatientNo(res.data);
       }
