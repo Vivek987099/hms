@@ -10,7 +10,7 @@ function Login() {
     password: "",
   });
 
-  let { login } = useContext(AuthContext);
+  let { login ,loading} = useContext(AuthContext);
   let handleChange = (e) => {
     const { name, value } = e.target;
     setLoginDetails({
@@ -44,7 +44,11 @@ function Login() {
   return (
     <>
       <div className="flex items-center justify-center min-h-screen bg-[#eaf3fa]  px-4">
-        <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-8">
+
+        {
+
+          !loading ?(<>
+          <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-8">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
             Login To HMS
           </h2>
@@ -77,6 +81,7 @@ function Login() {
                   onChange={handleChange}
                   value={loginDetails.password}
                   type={showPassword ? "text" : "password"}
+                  
                   placeholder="Enter your password"
                   className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
                 />
@@ -99,7 +104,7 @@ function Login() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="cursor-pointer w-full bg-[#06adaa] text-white py-2 rounded-md font-semibold hover:bg-[#08908d] transition duration-300"
+              className="cursor-pointer w-full disabled:cursor-crosshair disabled:bg-gray-600 bg-[#06adaa] text-white py-2 rounded-md font-semibold hover:bg-[#08908d] transition duration-300"
             >
               Login
             </button>
@@ -113,6 +118,9 @@ function Login() {
             </p>
           </form>
         </div>
+          </>):(<><span class="circle-loader"></span></>)
+        }
+        
       </div>
     </>
   );

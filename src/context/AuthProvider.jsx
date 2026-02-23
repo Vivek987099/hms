@@ -17,6 +17,7 @@ function AuthProvider({ children }) {
   let [isLast, setIsLast] = useState(false);
   let [totalPages, setTotalPages] = useState(0);
   let [currentPage, setCurrentPage] = useState(0);
+  let [circleLoader, setCircleLoader] = useState(false);
 
   let navigate = useNavigate();
 
@@ -96,6 +97,7 @@ function AuthProvider({ children }) {
         let authResponse = await checkAuth(sessionStorage.getItem("token"));
         if (authResponse.status === 200) {
           if (authResponse.data.LoggedIn) {
+            setIsLoggedIn(authResponse.data.LoggedIn);
             let profile = await getProfile(sessionStorage.getItem("token"));
             if (profile.status === 200) {
               setUser({
@@ -104,13 +106,16 @@ function AuthProvider({ children }) {
                 status: profile.data.status,
                 createAt: profile.data.createdAt,
               });
-              setLoading(false);
-              if (profile.data.role === "ADMIN") {
-                navigate("/admin/dashboard");
-              }
-              if (profile.data.role === "DOCTOR") {
-                navigate("/doctor/dashboard");
-              }
+              console.log(profile.data.role);
+              
+                setLoading(false);
+                if (profile.data.role === "ADMIN") {
+                  navigate("/admin/dashboard");
+                }
+                if (profile.data.role === "DOCTOR") {
+                  navigate("/doctor/dashboard");
+                }
+
               Swal.fire({
                 title: "Login Successful",
                 text: response?.data?.message,
@@ -121,13 +126,14 @@ function AuthProvider({ children }) {
                     "px-6 py-2 bg-[#06adaa] text-white rounded-md hover:bg-[#08908d] block w-full",
                 },
                 buttonsStyling: false,
-              });
+              })
             }
           }
         }
       }
     } catch (error) {
-      console.log(error);
+      setLoading(false);
+      console.log("error console ");
 
       Swal.fire({
         title: "Login Failed",
@@ -144,14 +150,12 @@ function AuthProvider({ children }) {
     }
   };
 
-  let logout = async () => {
+  let logout = () => {
     try {
-      let res = await logoutUser();
-      if (res.status === 200) {
-        setUser(null);
-        setIsLoggedIn(false);
-        navigate("/login");
-      }
+      sessionStorage.removeItem("token");
+      setUser(null);
+      setIsLoggedIn(false);
+      navigate("/login");
     } catch (error) {
       alert("Logout failed due to some error. Please try again.");
     }
@@ -202,6 +206,9 @@ function AuthProvider({ children }) {
         sidebarToggle,
         updateAppointmentModel,
         updatePatientModel,
+        setLoading,
+        circleLoader,
+        setCircleLoader
       }}
     >
       {children}
