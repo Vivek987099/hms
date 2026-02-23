@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const user=   axios.create({
-  baseURL: "https://hms-backend-production-d710.up.railway.app/api/auth/api/user",
+  baseURL: "https://hms-backend-production-d710.up.railway.app/api/user",
 });
 
 
