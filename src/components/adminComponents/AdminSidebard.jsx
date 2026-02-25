@@ -24,14 +24,14 @@ function AdminSidebard() {
 
   return (
     <>
-      <div className="  flex justify-between outline-1  outline-gray-300 overflow-y-auto h-full">
+      <div className="  flex justify-between outline-1 dark:bg-gray-900   outline-gray-300 overflow-y-auto h-full">
         <div className="outline-1 p-4 outline-gray-300 w-full flex flex-col justify-between">
           <div className="p-2 ">
-            <h5 className="text-gray-500 mt-3 text-[12px] font-semibold">
+            <h5 className="text-gray-500 dark:text-slate-100 mt-3 text-[12px] font-semibold">
               {" "}
               MAIN PAGES
             </h5>
-            <ul className="mt-5 admin-menu">
+            <ul className="mt-5 admin-menu ">
               <li>
                 <Link
                   onClick={() => {
@@ -45,7 +45,7 @@ function AdminSidebard() {
                 >
                   <div className="flex justify-center items-center gap-x-3">
                     <LuLayoutDashboard className="text-2xl" />
-                    <span className="text-[16px] font-medium">Dashboard</span>
+                    <span className="text-[16px] font-medium dark:text-slate-100 ">Dashboard</span>
                   </div>
                 </Link>
               </li>
@@ -53,6 +53,7 @@ function AdminSidebard() {
                 onClick={() => {
                   (setOpenMenu(openMenu === 1 ? null : 1), setActiveIndex(2));
                 }}
+                className="dark:[&>*]:text-slate-100"
               >
                 <Link
                   to={"/admin/dashboard/users"}
@@ -112,7 +113,7 @@ function AdminSidebard() {
                   </ul>
                 </div>
               </li>
-              <li>
+              <li  className="dark:[&>*]:text-slate-100">
                 <Link
                   onClick={() => {
                     (setActiveIndex(3), setOpenMenu(openMenu === 2 ? null : 2));
@@ -155,7 +156,7 @@ function AdminSidebard() {
                   </ul>
                 </div>
               </li>
-              <li>
+              <li  className="dark:[&>*]:text-slate-100">
                 <Link
                   onClick={() => {
                     (setActiveIndex(4), setOpenMenu(openMenu === 3 ? null : 3));
@@ -201,7 +202,7 @@ function AdminSidebard() {
                   </ul>
                 </div>
               </li>
-              <li>
+              <li  className="dark:[&>*]:text-slate-100">
                 <Link
                   to={"/admin/dashboard/appointments"}
                   onClick={() => {
@@ -249,7 +250,7 @@ function AdminSidebard() {
                   </ul>
                 </div>
               </li>
-              <li>
+              <li  className="dark:[&>*]:text-slate-100">
                 <Link
                   to={"/admin/dashboard/doctor-schedule"}
                   onClick={() => {
@@ -297,7 +298,7 @@ function AdminSidebard() {
                   </ul>
                 </div>
               </li>
-              <li>
+              <li  className="dark:[&>*]:text-slate-100">
                 <Link
                   to={"/admin/dashboard/department"}
                   onClick={() => {

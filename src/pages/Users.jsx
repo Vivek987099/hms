@@ -151,20 +151,20 @@ function Users() {
 
   return (
     <>
-      <div className="user-page-container relative  bg-[#f5f7fb] p-4">
+      <div className="user-page-container relative dark:bg-gray-900  dark:[&_*]:text-slate-100 bg-[#f5f7fb] p-4">
         <DashboardHeader
           title="Users"
           path={location.pathname}
         ></DashboardHeader>
-        <div className="w-full   p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+        <div className="w-full  dark:bg-gray-800 p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
           <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
             All Users
           </h1>
-          <div className="mt-5 overflow-x-auto outline-2 outline-gray-200 rounded-lg">
+          <div className="mt-5   overflow-x-auto outline-2 outline-gray-200 dark:outline-gray-600 rounded-lg">
             {allUser ? (
-              <table className="w-full ">
+              <table className="w-full dark:bg-gray-800 ">
                 <thead className="bg-[#f8f9fa] text-[#2c3e50]">
-                  <tr className="border-b border-gray-300">
+                  <tr className="border-b border-gray-300 dark:border-gray-600 dark:bg-gray-800">
                     <th className=" px-10 py-3 text-left font-semibold">
                       Username
                     </th>
@@ -189,7 +189,7 @@ function Users() {
                   {allUser.map((currentUser, index) => (
                     <tr
                       key={index}
-                      className="border-b border-gray-300 last:border-0"
+                      className="border-b border-gray-300 dark:border-gray-600 last:border-0"
                     >
                       <td className="px-10 py-3 text-left">
                         {currentUser.username}

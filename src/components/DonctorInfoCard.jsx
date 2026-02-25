@@ -9,7 +9,7 @@ function DonctorInfoCard(props) {
     <>
       <div className="  font-poppins rounded-2xl shadow-xl w-[18rem] h-[25rem] overflow-hidden bg-white hover:translate-y-[-6px] transition-transform ease-in-out duration-500 cursor-pointer">
         <div className=" w-full h-[14rem] overflow-hidden">
-          <img src={`http://localhost:8080/file/${props.profilePhotoUrl}`} alt="profle photo" className="w-full  object-center" />
+          <img src={`https://hms-backend-production-d710.up.railway.app/file/${props.profilePhotoUrl}`} alt="profle photo" className="w-full  object-center" />
         </div>
 
         <div className="p-3">

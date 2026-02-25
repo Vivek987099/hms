@@ -113,7 +113,7 @@ function Dashboard() {
 
   return (
     <>
-      <div className="p-4">
+      <div className="p-4 dark:bg-gray-900">
         <DashboardHeader
           title="Dashboard"
           path={location.pathname}
@@ -146,11 +146,11 @@ function Dashboard() {
             ></InfoCards>
           </div>
         </div>
-        <div className="w-ful mt-3">
+        <div className="w-ful mt-3 ">
           <div className="flex gap-5 flex-col lg:flex-row">
-            <div className="w-full bg-white p-4 rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+            <div className="w-full bg-white dark:bg-gray-800  p-4 rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
               <div className="mb-5">
-                <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
+                <h1 className="text-[#2c3e50] font-semibold text-[1.1rem] dark:text-slate-100">
                   Performance Overview
                 </h1>
               </div>
@@ -176,9 +176,9 @@ function Dashboard() {
               </ResponsiveContainer>
             </div>
 
-            <div className="w-full  bg-white p-4 rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+            <div className="w-full  bg-white p-4 dark:bg-gray-800 rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
               <div className="mb-5">
-                <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
+                <h1 className="text-[#2c3e50] font-semibold text-[1.1rem] dark:text-slate-100">
                   Appointment Status
                 </h1>
               </div>
@@ -216,14 +216,14 @@ function Dashboard() {
 
         {/* RECENT APPOINTMENTS CONTAINER  */}
 
-        <div className="w-full   p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-7">
+        <div className="w-full dark:bg-gray-800 dark:[&_*]:bg-gray-800   dark:[&_*]:text-slate-100 p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-7">
           <div className="flex justify-between">
             <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
               Recent Appointments
             </h1>
             <button
               onClick={() => navigate("/admin/dashboard/appointments")}
-              className="text-blue-700 cursor-pointer px-3 py-0.5"
+              className="text-blue-700 dark:!text-blue-300 cursor-pointer px-3 py-0.5"
             >
               Vivew All
             </button>
@@ -298,14 +298,14 @@ function Dashboard() {
         </div>
 
         {/* RECENT PATIENTS CONTAINER */}
-        <div className="w-full   p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-7">
+        <div className="w-full  dark:bg-gray-800 dark:[&_*]:bg-gray-800   dark:[&_*]:text-slate-100 p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-7">
           <div className="flex justify-between">
             <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
               Recent Patients
             </h1>
             <button
               onClick={() => navigate("/admin/dashboard/patients")}
-              className="text-blue-700 cursor-pointer px-3 py-0.5"
+              className="text-blue-700 dark:!text-blue-300 cursor-pointer px-3 py-0.5"
             >
               Vivew All
             </button>

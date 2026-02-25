@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import logoImage from "./../../assets/logo/logo.png";
 import { MdMenuOpen } from "react-icons/md";
 import { IoMdSearch } from "react-icons/io";
-import doctorimg from "./../../assets/doctor/doctor1.jpg";
 import { AuthContext } from "../../context/AuthProvider";
 import { FiMenu } from "react-icons/fi";
 import { IoCloseSharp } from "react-icons/io5";
@@ -30,7 +29,7 @@ function AdminHeader() {
   let [activeIndex, setActiveIndex] = useState(1);
   return (
     <>
-      <header className="admin-header outline-1 z-50 py-1 bg-white outline-gray-300">
+      <header className="admin-header dark:bg-gray-800 dark:[&_*]:bg-gray-800 dark:[&_*]:text-slate-100 outline-1 z-50 py-1 bg-white outline-gray-300">
         <div className="container flex flex-row-reverse lg:flex-row justify-between items-center">
           <div className=" lg:flex items-center gap-x-6 hidden">
             <div className="lg:flex gap-x-2 items-center hidden">
@@ -49,7 +48,7 @@ function AdminHeader() {
                 <IoMdSearch className="absolute left-2 top-1.5 z-10 text-2xl text-gray-600" />
 
                 <input
-                  className="absolute top-0 left-0 h-full w-full pl-10 text-gray-600 outline-none focus:outline-none p-1.5 rounded bg-blue-50  transition-all duration-300"
+                  className="absolute dark:border-1 dark:border-slate-200 top-0 left-0 h-full w-full pl-10 text-gray-600 outline-none focus:outline-none p-1.5 rounded bg-blue-50  transition-all duration-300"
                   type="search"
                   placeholder="search...."
                 />

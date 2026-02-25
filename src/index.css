@@ -30,7 +30,7 @@
     height: calc(100vh-70px) !important;
   }
   .admin-menu li > a.active {
-    @apply bg-gray-100 font-semibold;
+    @apply bg-gray-100 font-semibold dark:bg-gray-800;
   }
   .headera.active {
     @apply text-[#06adaa];

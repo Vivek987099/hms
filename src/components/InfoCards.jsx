@@ -7,10 +7,10 @@ function InfoCards(props) {
       <div
       style={{borderColor:props.color}}
         
-        className={`info-card relative   w-full min-h-40 bg-white border-t-4   rounded-2xl p-7  overflow-hidden shadow-lg`}
+        className={`info-card relative dark:bg-gray-800 dark:[&>*]:text-slate-100  w-full min-h-40 bg-white border-t-4   rounded-2xl p-7  overflow-hidden shadow-lg`}
       >
         {/* Total Users Text */}
-        <p className="text-sm opacity-90">{props.title} </p>
+        <p className="text-sm opacity-90 ">{props.title} </p>
 
         {/* Count */}
         <h2 className="text-4xl font-bold">{props.total}</h2>
