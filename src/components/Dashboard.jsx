@@ -216,7 +216,7 @@ function Dashboard() {
 
         {/* RECENT APPOINTMENTS CONTAINER  */}
 
-        <div className="w-full dark:bg-gray-800 dark:[&_*]:bg-gray-800   dark:[&_*]:text-slate-100 p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-7">
+        <div className="w-full dark:bg-gray-800 dark:[&_*]:bg-gray-800   dark:[&_*]:text-slate-100 p-4 bg-white rounded-xl px-2 lg:px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-7">
           <div className="flex justify-between">
             <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
               Recent Appointments
@@ -228,8 +228,8 @@ function Dashboard() {
               Vivew All
             </button>
           </div>
-          <div className="mt-5 overflow-x-auto outline-2 outline-gray-200 rounded-lg">
-            <table className="w-full ">
+          <div className="mt-5 w-full overflow-x-auto outline-2 outline-gray-200 rounded-lg">
+            <table className="w-full [&_*]:text-sm lg:[&_*]:text-base xl:[&_*]:text-lg">
               <thead className="bg-[#f8f9fa] text-[#2c3e50]">
                 <tr className="border-b border-gray-300">
                   <th className=" px-10 py-3 text-left font-semibold">
@@ -298,7 +298,7 @@ function Dashboard() {
         </div>
 
         {/* RECENT PATIENTS CONTAINER */}
-        <div className="w-full  dark:bg-gray-800 dark:[&_*]:bg-gray-800   dark:[&_*]:text-slate-100 p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-7">
+        <div className="w-full  dark:bg-gray-800 dark:[&_*]:bg-gray-800   dark:[&_*]:text-slate-100 p-4 bg-white rounded-xl px-2  lg:px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-7">
           <div className="flex justify-between">
             <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
               Recent Patients
@@ -312,17 +312,17 @@ function Dashboard() {
           </div>
 
           <div className="mt-5 overflow-x-auto outline-2 outline-gray-200 rounded-lg">
-            <table className="w-full ">
+            <table className="w-full [&_*]:text-sm lg:[&_*]:text-base xl:[&_*]:text-lg">
               <thead className="bg-[#f8f9fa] text-[#2c3e50]">
                 <tr className="border-b border-gray-300">
-                  <th className=" px-10 py-3 text-left font-semibold">
+                  <th className=" px-1.5 lg:px-10 py-3 text-center font-semibold">
                     Patient Name
                   </th>
-                  <th className=" px-10 py-3 text-left font-semibold">
+                  <th className=" px-1.5 lg:px-10 w-[10%] py-3 text-center font-semibold">
                     Gender
                   </th>
-                  <th className=" px-10 py-3 text-left font-semibold">Phone</th>
-                  <th className=" px-10 py-3 text-left font-semibold">
+                  <th className=" px-1.5 lg:px-10 py-3 text-center font-semibold">Phone</th>
+                  <th className=" px-1.5 lg:px-10 py-3 text-center font-semibold">
                     Address
                   </th>
                 </tr>
@@ -331,18 +331,18 @@ function Dashboard() {
                 {recentPatients.map((patient, index) => (
                   <tr
                     key={index}
-                    className="border-b border-gray-300 last:border-0"
+                    className="border-b border-gray-300 last:border-0 [&_*]:whitespace-nowrap"
                   >
-                    <td className="text-gray-800 px-10 py-3 text-left">
+                    <td className="text-gray-800 px-1.5  lg:px-10 py-3 text-center">
                       {patient.patientName}
                     </td>
-                    <td className="text-gray-800 px-10 py-3 text-left">
+                    <td className="text-gray-800 px-1.5  lg:px-10 py-3 text-center">
                       {patient.gender}
                     </td>
-                    <td className="text-gray-800 px-10 py-3 text-left">
+                    <td className="text-gray-800 px-1.5  lg:px-10 py-3 text-center">
                       {patient.phone}
                     </td>
-                    <td className="text-gray-800 px-10 py-3 text-left">
+                    <td className="text-gray-800 px-1.5  lg:px-10 py-3 text-center">
                       {patient.adderes}
                     </td>
                   </tr>

@@ -18,7 +18,7 @@ function Patient() {
     updatePatientModel,
     user,
     circleLoader,
-    setCircleLoader
+    setCircleLoader,
   } = useContext(AuthContext);
 
   let [patientDetails, setPatientDetails] = useState({
@@ -103,7 +103,7 @@ function Patient() {
     } catch (error) {
       setCircleLoader(false);
       console.log(error);
-      
+
       if (error.response.status === 400) {
         setNameError(error.response.data.patientName);
         setAgeError(error.response.data.age);
@@ -193,7 +193,7 @@ function Patient() {
         title="Patients"
         path={location.pathname}
       ></DashboardHeader>
-      <div className="w-full   p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+      <div className="w-full   py-4 bg-white rounded-xl px-2 lg:px-5 xl:px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
         <div className="flex justify-between">
           <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
             All Patients
@@ -217,21 +217,27 @@ function Patient() {
           </div>
         </div>
         <div className="table-wrapper mt-5 overflow-x-auto  outline-2 outline-gray-200 rounded-lg">
-          <table className="w-full ">
+          <table className="w-full [&_*]:text-sm lg:[&_*]:text-base ">
             <thead className="bg-[#f8f9fa] text-[#2c3e50]">
               <tr className="border-b border-gray-300">
-                <th className=" px-10 py-3 text-left font-semibold">
+                <th className=" px-1.5 lg:px-10 py-3 text-center font-semibold">
                   Patient Name
                 </th>
-                <th className=" px-10 py-3 text-left font-semibold">Gender</th>
-                <th className=" px-10 py-3 text-left font-semibold">Phone</th>
-                <th className=" px-10 py-3 text-left font-semibold">Address</th>
-                <th className=" px-10 py-3 text-left font-semibold">
+                <th className=" px-1.5 lg:px-10 py-3 text-center font-semibold">
+                  Gender
+                </th>
+                <th className=" px-1.5 lg:px-10 py-3 text-center font-semibold">
+                  Phone
+                </th>
+                <th className=" px-1.5 lg:px-10 py-3 text-center font-semibold">
+                  Address
+                </th>
+                <th className=" px-1.5 lg:px-10 py-3 text-center font-semibold hidden xl:table-cell">
                   Admitted At
                 </th>
 
                 {user.role === "ADMIN" && (
-                  <th className=" px-10 py-3 text-center font-semibold">
+                  <th className=" px-1.5 lg:px-10 py-3 text-center font-semibold">
                     Action
                   </th>
                 )}
@@ -243,38 +249,44 @@ function Patient() {
                   key={index}
                   className="border-b border-gray-300 last:border-0"
                 >
-                  <td className="px-10 py-3 text-left whitespace-nowrap">
+                  <td className="px-1.5 lg:px-3 py-3 text-center whitespace-nowrap">
                     {patient.patientName}
                   </td>
-                  <td className="px-10 py-3 text-left whitespace-nowrap">
+                  <td className="px-1.5 lg:px-3 py-3 text-center whitespace-nowrap">
                     {patient.gender}
                   </td>
-                  <td className="px-10 py-3 text-left whitespace-nowrap">
+                  <td className="px-1.5 lg:px-3 py-3 text-center whitespace-nowrap">
                     {patient.phone}
                   </td>
-                  <td className="px-10 py-3 text-left whitespace-nowrap">
+                  <td className="px-1.5 lg:px-3 py-3 text-center whitespace-nowrap">
                     {patient.adderes}
                   </td>
 
-                  <td className="px-10 py-3 text-left whitespace-nowrap">
+                  <td className="px-1.5 lg:px-3 py-3 text-center hidden xl:table-cell whitespace-nowrap">
                     {patient.createdAt}
                   </td>
 
                   {user.role === "ADMIN" && (
-                    <td className=" px-10 py-3 text-center font-semibold flex flex-col lg:flex-row">
+                    <td className=" px-1.5 lg:px-3 py-3 text-center font-[400]  flex justify-center gap-x-3 whitespace-nowrap">
                       <button
                         onClick={() =>
                           handleSoftDeletePatient(patient.patientId)
                         }
-                        className="bg-red-500 text-white cursor-pointer px-4 py-1 mr-2 rounded-2xl text-[10px]"
+                        className=" text-white cursor-pointer     py-0.5  rounded-2xl "
                       >
-                        Delete
+                        <img
+                          src="https://www.bing.com/th/id/OIP.lP6fK8HAWfJ98ruxm7cI6QHaHa?w=221&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
+                          alt=""
+                          width={20}
+                        />
                       </button>
                       <button
                         onClick={() => handlePatientEdit(patient)}
-                        className="bg-green-500 text-white cursor-pointer px-4 py-1 rounded-2xl text-[10px]"
+                        className=" text-white cursor-pointer  py-0.5 rounded-2xl "
                       >
-                        Edit
+                        <img src="https://cdn4.iconfinder.com/data/icons/social-messaging-ui-coloricon-1/21/31-512.png" alt=""
+                        width={20} />
+                        
                       </button>
                     </td>
                   )}
