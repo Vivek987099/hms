@@ -25,7 +25,7 @@ function AdminSidebard() {
   return (
     <>
       <div className="  flex justify-between outline-1 dark:bg-gray-900   outline-gray-300 overflow-y-auto h-full">
-        <div className="outline-1 p-4 outline-gray-300 w-full flex flex-col justify-between">
+        <div className="outline-1 p-4  outline-gray-300 w-full flex flex-col justify-between">
           <div className="p-2 ">
             <h5 className="text-gray-500 dark:text-slate-100 mt-3 text-[12px] font-semibold">
               {" "}

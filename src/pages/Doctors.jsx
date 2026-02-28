@@ -3,7 +3,6 @@ import DashboardHeader from "./../components/DashboardHeader";
 import { useLocation } from "react-router";
 import { AuthContext } from "../context/AuthProvider";
 import {
-  createDoctor,
   deleteDoctorById,
   getAllDoctors,
   updateDoctor,
@@ -15,14 +14,9 @@ import { getUserByRole } from "../api/User";
 function Doctors() {
   let location = useLocation();
   let { user } = useContext(AuthContext);
-  let { addDoctorModel, allDepartment, fetchAllDepartment, updateDoctorModel } =
+  let {  allDepartment, fetchAllDepartment, updateDoctorModel } =
     useContext(AuthContext);
-  const [doctorDetails, setdoctorDetails] = useState({
-    doctorName: "",
-    specialization: "",
-    fee: "",
-    departmentId: "",
-  });
+ 
   const [updateDoctorDetails, setUpdateDoctorDetails] = useState({
     doctorName: "",
     specialization: "",
@@ -32,120 +26,21 @@ function Doctors() {
     departmentId: "",
   });
 
-  let [validationsError, setValidationsError] = useState({
-    departmentId: "",
-    doctorName: "",
-    email: "",
-    fee: "",
-    specialization: "",
-  });
+  
 
   const [currentDoctorId, setCurrentDoctorId] = useState(null);
 
   let [doctorUsers, setDoctorUsers] = useState([]);
-  let [userId, setUserId] = useState("");
-  let [userIdError, setUserIdError] = useState("");
 
-  const [file, setFile] = useState(null);
   let [allDoctors, setAllDoctors] = useState([]);
   let [currentPage, setCurrentPage] = useState(0);
   let [isLast, setIsLast] = useState(false);
   let [totalPages, setTotalPages] = useState(0);
-  let [loading, setLoading] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-
-    setdoctorDetails({
-      ...doctorDetails,
-      [name]: name === "departmentId" ? Number(value) : value,
-    });
-  };
-  let handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      setLoading(true);
-
-      let formData = new FormData();
 
 
+ 
 
-      formData.append(
-        "doctor",
-        new Blob([JSON.stringify(doctorDetails)], { type: "application/json" }),
-      );
-      formData.append("file", file);
-
-      if(!userId){
-        
-        setUserIdError("Please select user for doctor");
-        setLoading(false);
-        return;
-      }
-
-      let res = await createDoctor(userId, formData,sessionStorage.getItem("token"));
-      console.log(res.status);
-
-      if (res.status === 200) {
-        setLoading(false);
-        setdoctorDetails({
-          doctorName: "",
-          specialization: "",
-          fee: "",
-        });
-        setValidationsError({
-          departmentId: "",
-          doctorName: "",
-          email: "",
-          fee: "",
-          specialization: "",
-        });
-        fetchAllDoctors();
-        addDoctorModel.setOff();
-        alert(res.data.message);
-      }
-    } catch (error) {
-      setLoading(false);
-      console.log(error.response);
-
-       if (error.response.status === 409){
-        alert(error.response.data.message)
-
-       }
-      
-      if (error.response.status === 400) {
-        setLoading(false);
-        
-       
-
-        setValidationsError({
-          departmentId: error.response.data.departmentId,
-          doctorName: error.response.data.doctorName,
-          email: error.response.data.email,
-          fee: error.response.data.fee,
-          specialization: error.response.data.specialization,
-        });
-      }
-    }
-
-    // Handle form submission, such as sending the data to an API
-  };
-
-  let submitCancel = () => {
-    addDoctorModel.setOff();
-    setValidationsError({
-      departmentId: "",
-      doctorName: "",
-      email: "",
-      fee: "",
-      specialization: "",
-    });
-  };
+ 
 
   let fetchAllDoctors = async () => {
     let res = await getAllDoctors(sessionStorage.getItem("token"));
@@ -249,12 +144,12 @@ function Doctors() {
   return (
     <>
       {" "}
-      <div className="doctor-page-container relative p-4">
+      <div className="doctor-page-container dark:bg-gray-900 relative p-4">
         <DashboardHeader
           title="Doctors"
           path={location.pathname}
         ></DashboardHeader>
-        <div className="w-full   p-4 bg-white rounded-xl lg:px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+        <div className="w-full  dark:bg-gray-800  p-4 bg-white rounded-xl lg:px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
           <div className="flex justify-between">
             <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
               All Doctors
@@ -307,7 +202,7 @@ function Doctors() {
                 {allDoctors.map((doctor, index) => (
                   <tr
                     key={index}
-                    className="border-b border-gray-300 last:border-0"
+                    className="border-b dark:[&_*]:text-slate-100 border-gray-300  last:border-0"
                   >
                     <td className="px-10 py-3 text-left">
                       <div className=" size-12 rounded-full overflow-hidden">

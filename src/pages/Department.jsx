@@ -113,15 +113,15 @@ function Department() {
 
   return (
     <>
-      <div className="doctor-page-container p-4 relative">
+      <div className="doctor-page-container dark:bg-gray-900 p-4 relative">
         <DashboardHeader
           title="Departments"
           path={location.pathname}
         ></DashboardHeader>
 
-        <div className="w-full   p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+        <div className="w-full dark:bg-gray-800 p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
           <div className="flex justify-between">
-            <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
+            <h1 className="text-[#2c3e50] font-semibold text-[1.1rem] dark:text-slate-100">
               All Departments
             </h1>
           </div>
@@ -149,7 +149,7 @@ function Department() {
                     {allDepartment.map((department, index) => (
                       <tr
                         key={index}
-                        className="border-b border-gray-300 last:border-0"
+                        className="border-b border-gray-300 last:border-0 dark:text-slate-100"
                       >
                         <td className="px-10 py-3 text-left">
                           {department.departmentName}
@@ -194,7 +194,7 @@ function Department() {
         {/* =========      ADD DEPARTMENT FORM    ========== */}
         {createDepartModel.value && (
           <div className="add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
-            <div className="bg-white p-7 rounded md:w-1/2 lg:w-1/3">
+            <div className="bg-white p-7 dark:bg-gray-800 dark:[&_*]:text-slate-100 rounded md:w-1/2 lg:w-1/3">
               <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
                 Add Department
               </h3>

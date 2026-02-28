@@ -2,6 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import DashboardHeader from "../components/DashboardHeader";
 import { FaChevronRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
+import { MdDeleteOutline } from "react-icons/md";
+import { FaRegEdit } from "react-icons/fa";
+
 import { AuthContext } from "../context/AuthProvider";
 import { registerPatient, softDelete, updatePatient } from "../api/PatientApi";
 
@@ -188,14 +191,14 @@ function Patient() {
   };
 
   return (
-    <div className="doctor-page-container relative p-4">
+    <div className="doctor-page-container relative p-4 dark:bg-gray-900">
       <DashboardHeader
         title="Patients"
         path={location.pathname}
       ></DashboardHeader>
-      <div className="w-full   py-4 bg-white rounded-xl px-2 lg:px-5 xl:px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+      <div className="w-full dark:bg-gray-800  py-4 bg-white rounded-xl px-2 lg:px-5 xl:px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
         <div className="flex justify-between">
-          <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
+          <h1 className="text-[#2c3e50] font-semibold text-[1.1rem] dark:text-slate-100">
             All Patients
           </h1>
           <div className="flex items-center gap-2 text-[#7f8c8d] mt-1">
@@ -205,7 +208,7 @@ function Patient() {
             >
               <FaAngleLeft />
             </button>
-            <span className="text-sm md:text-base lg:text-lg">
+            <span className="text-sm md:text-base lg:text-lg dark:text-slate-100">
               {currentPage + 1}
             </span>
             <button
@@ -217,7 +220,7 @@ function Patient() {
           </div>
         </div>
         <div className="table-wrapper mt-5 overflow-x-auto  outline-2 outline-gray-200 rounded-lg">
-          <table className="w-full [&_*]:text-sm lg:[&_*]:text-base ">
+          <table className="w-full [&_*]:text-sm lg:[&_*]:text-base hidden lg:table">
             <thead className="bg-[#f8f9fa] text-[#2c3e50]">
               <tr className="border-b border-gray-300">
                 <th className=" px-1.5 lg:px-10 py-3 text-center font-semibold">
@@ -247,22 +250,21 @@ function Patient() {
               {allPatients.map((patient, index) => (
                 <tr
                   key={index}
-                  className="border-b border-gray-300 last:border-0"
                 >
-                  <td className="px-1.5 lg:px-3 py-3 text-center whitespace-nowrap">
+                  <td className="px-1.5 dark:text-slate-100 lg:px-3 py-3 text-center whitespace-nowrap">
                     {patient.patientName}
                   </td>
-                  <td className="px-1.5 lg:px-3 py-3 text-center whitespace-nowrap">
+                  <td className="px-1.5 lg:px-3 py-3 text-center dark:text-slate-100 whitespace-nowrap">
                     {patient.gender}
                   </td>
-                  <td className="px-1.5 lg:px-3 py-3 text-center whitespace-nowrap">
+                  <td className="px-1.5 lg:px-3 py-3 text-center dark:text-slate-100 whitespace-nowrap">
                     {patient.phone}
                   </td>
-                  <td className="px-1.5 lg:px-3 py-3 text-center whitespace-nowrap">
+                  <td className="px-1.5 lg:px-3 py-3 text-center dark:text-slate-100 whitespace-nowrap">
                     {patient.adderes}
                   </td>
 
-                  <td className="px-1.5 lg:px-3 py-3 text-center hidden xl:table-cell whitespace-nowrap">
+                  <td className="px-1.5 lg:px-3 py-3 text-center dark:text-slate-100 hidden xl:table-cell whitespace-nowrap">
                     {patient.createdAt}
                   </td>
 
@@ -272,21 +274,16 @@ function Patient() {
                         onClick={() =>
                           handleSoftDeletePatient(patient.patientId)
                         }
-                        className=" text-white cursor-pointer     py-0.5  rounded-2xl "
+                        className="  cursor-pointer     py-0.5  rounded-2xl "
                       >
-                        <img
-                          src="https://www.bing.com/th/id/OIP.lP6fK8HAWfJ98ruxm7cI6QHaHa?w=221&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-                          alt=""
-                          width={20}
-                        />
+                          <MdDeleteOutline className="text-[25px]  rounded-[4px] text-red-700 size-10 flex justify-center items-center  p-2" />
                       </button>
                       <button
                         onClick={() => handlePatientEdit(patient)}
-                        className=" text-white cursor-pointer  py-0.5 rounded-2xl "
+                        className="  cursor-pointer  py-0.5 rounded-2xl "
                       >
-                        <img src="https://cdn4.iconfinder.com/data/icons/social-messaging-ui-coloricon-1/21/31-512.png" alt=""
-                        width={20} />
-                        
+                                                <FaRegEdit className="text-[25px]  rounded-[4px] flex justify-center items-center text-blue-900 size-10  p-2" />
+
                       </button>
                     </td>
                   )}
@@ -294,15 +291,104 @@ function Patient() {
               ))}
             </tbody>
           </table>
+          {/* CARDS FOR SMALL SCREEN  */}
+          <div className="lg:hidden !w-full">
+            {allPatients.map((patient, index) => (
+              <div
+              key={index}
+                className={`
+        bg-white dark:bg-slate-800
+        border border-gray-200 dark:border-slate-700
+        rounded-xl
+        shadow-sm
+        hover:shadow-md
+        transition-all duration-300
+        hover:-translate-y-1
+        p-5
+       
+      `}
+              >
+                {/* Header */}
+                <div className="flex items-center  justify-between mb-4">
+                  <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+                    Patient Information
+                  </h2>
+
+                  <span className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-md font-medium">
+                    Active
+                  </span>
+                </div>
+
+                {/* Divider */}
+                <div className="border-t border-gray-200 dark:border-slate-700 my-4 "></div>
+
+                <div className="flex justify-between">
+                  {/* Audit */}
+                  <div className="">
+                    <h1 className="text-gray-500 dark:text-slate-400">
+                      <span className="font-semibold text-gray-900">
+                        Name :{" "}
+                      </span>{" "}
+                      {patient.patientName}
+                    </h1>
+                    <h1 className="text-gray-500 dark:text-slate-400">
+                      <span className="font-semibold text-gray-900">
+                        Gender :{" "}
+                      </span>{" "}
+                      {patient.gender}
+                    </h1>
+                    <h1 className="text-gray-500 dark:text-slate-400">
+                      <span className="font-semibold text-gray-900">
+                        Phone :{" "}
+                      </span>{" "}
+                      {patient.phone}
+                    </h1>
+                    <h1 className="text-gray-500 dark:text-slate-400">
+                      <span className="font-semibold text-gray-900">
+                        Address :{" "}
+                      </span>{" "}
+                      {patient.adderes}
+                    </h1>
+                    <h1 className="text-gray-500 dark:text-slate-400">
+                      <span className="font-semibold text-gray-900">
+                        Admitted At :{" "}
+                      </span>{" "}
+                      {patient.createdAt}
+                    </h1>
+                  </div>
+                  <div className="self-start">
+                    {user.role === "ADMIN" && (
+                      <div className=" px-1.5 lg:px-3  text-center font-[400]  flex justify-center gap-x-3 whitespace-nowrap">
+                        <button
+                          onClick={() =>
+                            handleSoftDeletePatient(patient.patientId)
+                          }
+                          className=" bg-[rgba(255,0,0,0.2)] rounded-[4px] text-red-700 size-10 flex justify-center items-center  p-2 cursor-pointer       "
+                        >
+                          <MdDeleteOutline className="text-[25px] " />
+                        </button>
+                        <button
+                          onClick={() => handlePatientEdit(patient)}
+                          className="  cursor-pointer  bg-[rgba(0,0,255,0.2)] rounded-[4px] flex justify-center items-center text-blue-900 size-10  p-2  "
+                        >
+                          <FaRegEdit className="text-[25px]" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
       {addPatientModel.value && (
         <>
-          <div className="add-user-form add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
+          <div className="add-user-form  add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
             {!circleLoader ? (
               <>
-                <div className="bg-white h-full p-7 w-full">
+                <div className="bg-white dark:bg-gray-900 dark:[&_*]:text-slate-100 h-full p-7 w-full">
                   <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
                     Add Patient
                   </h3>

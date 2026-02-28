@@ -7,15 +7,17 @@ import { AuthContext } from "../../context/AuthProvider";
 import { FiMenu } from "react-icons/fi";
 import { IoCloseSharp } from "react-icons/io5";
 
-import { LuLayoutDashboard } from "react-icons/lu";
-import { FaAngleRight } from "react-icons/fa6";
 import { LuUsers } from "react-icons/lu";
 import { FaUserDoctor } from "react-icons/fa6";
 import { TbFileInvoice } from "react-icons/tb";
+import { AiOutlineLogout } from "react-icons/ai";
+
+import { LuLayoutDashboard } from "react-icons/lu";
+import { FaAngleRight } from "react-icons/fa6";
 import { IoMdPersonAdd } from "react-icons/io";
 
 function AdminHeader() {
-  let { user, sidebarToggle } = useContext(AuthContext);
+  let { user, sidebarToggle, logout } = useContext(AuthContext);
   let [openMenu, setOpenMenu] = useState(null);
   let {
     addUserModel,
@@ -81,14 +83,13 @@ function AdminHeader() {
         </div>
       </header>
       <div
-        className={`absolute lg:hidden outline-2 outline-gray-200 h-full transition-all ease-in-out duration-300 ${
+        className={`absolute dark:bg-gray-900 dark:[&_*]:text-slate-100  lg:hidden outline-2 outline-gray-200 h-full transition-all ease-in-out duration-300 ${
           mobileMenuToggle.value ? "left-0" : "-left-150"
         }  top-0 bg-white z-100  w-[50%]`}
       >
         <div className="flex items-center justify-between outline-1 px-2">
           <div className="p-4 flex gap-x-2 items-center ">
-            <img className="" src={logoImage} alt="" width={60} />
-            <h4 className="font-semibold text-gray-600 text-2xl">HEALTH</h4>
+            <h4 className="font-semibold text-gray-600 text-base">HEALTH</h4>
           </div>
           <div>
             <button onClick={() => mobileMenuToggle.setOff()}>
@@ -123,7 +124,7 @@ function AdminHeader() {
               </li>
               <li
                 onClick={() => {
-                  setOpenMenu(openMenu === 1 ? null : 1), setActiveIndex(2);
+                  (setOpenMenu(openMenu === 1 ? null : 1), setActiveIndex(2));
                 }}
               >
                 <Link
@@ -190,7 +191,7 @@ function AdminHeader() {
               <li>
                 <Link
                   onClick={() => {
-                    setActiveIndex(3), setOpenMenu(openMenu === 2 ? null : 2);
+                    (setActiveIndex(3), setOpenMenu(openMenu === 2 ? null : 2));
                   }}
                   to={"/admin/dashboard/doctors"}
                   className={`flex justify-between items-center p-2  text-gray-600 rounded-lg ${
@@ -239,7 +240,7 @@ function AdminHeader() {
               <li>
                 <Link
                   onClick={() => {
-                    setActiveIndex(4), setOpenMenu(openMenu === 3 ? null : 3);
+                    (setActiveIndex(4), setOpenMenu(openMenu === 3 ? null : 3));
                   }}
                   to={"/admin/dashboard/patients"}
                   className={`flex justify-between items-center p-2  text-gray-600 rounded-lg ${
@@ -289,7 +290,7 @@ function AdminHeader() {
                 <Link
                   to={"/admin/dashboard/appointments"}
                   onClick={() => {
-                    setActiveIndex(5), setOpenMenu(openMenu === 4 ? null : 4);
+                    (setActiveIndex(5), setOpenMenu(openMenu === 4 ? null : 4));
                   }}
                   className={`flex justify-between items-center p-2 text-gray-600  rounded-lg ${
                     activeIndex === 5 ? "active" : ""
@@ -340,7 +341,7 @@ function AdminHeader() {
                 <Link
                   to={"/admin/dashboard/doctor-schedule"}
                   onClick={() => {
-                    setActiveIndex(6), setOpenMenu(openMenu === 5 ? null : 5);
+                    (setActiveIndex(6), setOpenMenu(openMenu === 5 ? null : 5));
                   }}
                   className={`flex justify-between items-center p-2 text-gray-600  rounded-lg ${
                     activeIndex === 6 ? "active" : ""
@@ -391,7 +392,7 @@ function AdminHeader() {
                 <Link
                   to={"/admin/dashboard/department"}
                   onClick={() => {
-                    setActiveIndex(7), setOpenMenu(openMenu === 6 ? null : 6);
+                    (setActiveIndex(7), setOpenMenu(openMenu === 6 ? null : 6));
                   }}
                   className={`flex justify-between items-center p-2 text-gray-600  rounded-lg ${
                     activeIndex === 7 ? "active" : ""
@@ -437,6 +438,15 @@ function AdminHeader() {
                 </div>
               </li>
             </ul>
+          </div>
+        </div>
+        <div className="p-2">
+          <div
+            onClick={logout}
+            className=" bg-[rgb(72,187,181)] py-10  flex items-center rounded-2xl overflow-hidden justify-center gap-x-2 text-white text-[1.2rem] font-semibold"
+          >
+            <AiOutlineLogout />
+            <button className="cursor-pointer  ">Logout</button>
           </div>
         </div>
       </div>

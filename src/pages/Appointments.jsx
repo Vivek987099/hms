@@ -175,20 +175,20 @@ function Appointments() {
 
   return (
     <>
-      <div className="doctor-page-container p-4 relative">
+      <div className="doctor-page-container dark:bg-gray-900 p-4 relative">
         <DashboardHeader
           title="Appointments"
           path={location.pathname}
         ></DashboardHeader>
-        <div className="w-full   p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+        <div className="w-full   p-4 bg-white dark:bg-gray-800 rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
           <div className="flex justify-between">
-            <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
+            <h1 className="text-[#2c3e50] font-semibold text-[1.1rem] dark:text-slate-100">
               All Appointments
             </h1>
             <div className="flex items-center gap-x-10">
               <div>
                 <select
-                  className="appearance-none px-10 py-0.5 rounded outline-2 outline-gray-400 text-gray-800"
+                  className="appearance-none px-10 py-0.5 rounded outline-2 outline-gray-400 dark:text-slate-100 text-gray-800"
                   onChange={handleChange}
                   name="status"
                 >
@@ -327,7 +327,7 @@ function Appointments() {
         </div>
         {makeAppointmentModel.value && (
           <div className="add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
-            <div className="bg-white p-7 rounded md:w-1/2 lg:w-1/3">
+            <div className="bg-white dark:bg-gray-900 dark:[&_*]:text-slate-100 p-7 rounded md:w-1/2 lg:w-1/3">
               <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
                 Make an appointment
               </h3>
@@ -387,9 +387,9 @@ function Appointments() {
                     }
                     className="w-full text-gray-500 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
                   >
-                    <option value="">Select Patient </option>
+                    <option value="" className="dark:bg-gray-800">Select Patient </option>
                     {allPatients.map((patient, index) => (
-                      <option key={index} value={patient.patientId}>
+                      <option key={index} value={patient.patientId} className="dark:bg-gray-800">
                         {patient.patientName}
                       </option>
                     ))}
@@ -410,9 +410,9 @@ function Appointments() {
                     onChange={handleDepartmentChange}
                     className="w-full text-gray-500 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
                   >
-                    <option value="">Select Department</option>
+                    <option value="" className="dark:bg-gray-800">Select Department</option>
                     {allDepartment.map((department, index) => (
-                      <option key={index} value={department.departId}>
+                      <option key={index} value={department.departId} className="dark:bg-gray-800">
                         {department.departmentName}
                       </option>
                     ))}
@@ -431,9 +431,9 @@ function Appointments() {
                     }
                     className="w-full text-gray-500 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
                   >
-                    <option value="">Select Doctor </option>
+                    <option value="" className="dark:bg-gray-800">Select Doctor </option>
                     {doctorByDepartment.map((doctor, index) => (
-                      <option key={index} value={doctor.doctorId}>
+                      <option key={index} value={doctor.doctorId} className="dark:bg-gray-800">
                         {doctor.doctorName}
                       </option>
                     ))}
@@ -473,7 +473,7 @@ function Appointments() {
 
         {updateAppointmentModel.value && (
           <div className="add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
-            <div className="bg-white p-7 rounded md:w-1/2 lg:w-1/3">
+            <div className="bg-white  p-7 rounded md:w-1/2 lg:w-1/3">
               <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
                 Update Appointment Status
               </h3>

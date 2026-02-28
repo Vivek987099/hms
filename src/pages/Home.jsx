@@ -10,7 +10,6 @@ function Home() {
     
     <Slider></Slider>
     <ExpertDoctors></ExpertDoctors>
-    
     </>
   )
 }

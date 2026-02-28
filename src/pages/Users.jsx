@@ -3,23 +3,13 @@ import DashboardHeader from "./../components/DashboardHeader";
 import { useLocation } from "react-router";
 import { AuthContext } from "../context/AuthProvider";
 import Otp from "./../components/Otp";
-import {
-  addNewUser,
-  deleteUserById,
-  getAllUsers,
-  verifyUserOtp,
-} from "../api/User";
+import { addNewUser, deleteUserById, getAllUsers } from "../api/User";
 
 function Users() {
   let location = useLocation();
   let { addUserModel, user, allDepartment, fetchAllDepartment } =
     useContext(AuthContext);
-  let [step, setStep] = useState(1);
   let [doctorRole, setDoctorRole] = useState(false);
-
-  let [message, setMessage] = useState("");
-
-  let [OTP, setOTP] = useState("");
 
   let [loading, setLoading] = useState(false);
 
@@ -71,23 +61,22 @@ function Users() {
         new Blob([JSON.stringify(userDetails)], { type: "application/json" }),
       );
 
-      if(!userDetails.role.trim()){
-        alert("Please select user role")
+      if (!userDetails.role.trim()) {
+        alert("Please select user role");
         setLoading(false);
-        return
+        return;
       }
 
-      if(doctorRole){
-        if(
-            doctorDetails.doctorName.trim() === "" ||
-        doctorDetails.specialization.trim() === "" ||
-        doctorDetails.fee.trim() === "" ||
-        doctorDetails.departmentId.trim() === ""
-
-        ){
-            alert("Please fill all doctor details")
-              setLoading(false);
-              return
+      if (doctorRole) {
+        if (
+          doctorDetails.doctorName.trim() === "" ||
+          doctorDetails.specialization.trim() === "" ||
+          doctorDetails.fee.trim() === "" ||
+          doctorDetails.departmentId.trim() === ""
+        ) {
+          alert("Please fill all doctor details");
+          setLoading(false);
+          return;
         }
       }
 
@@ -105,24 +94,37 @@ function Users() {
         );
         formData.append("file", file);
       }
-      let res = await addNewUser(formData,sessionStorage.getItem("token"));
+      let res = await addNewUser(formData, sessionStorage.getItem("token"));
       if (res.status === 200) {
         setLoading(false);
+        setUserDetails({
+          username: "",
+          password: "",
+          role: "",
+        });
+        if (doctorRole) {
+          setdoctorDetails({
+            doctorName: "",
+            specialization: "",
+            fee: "",
+            departmentId: "",
+          });
+        }
+        addUserModel.setOff()
         alert(res.data.message);
         fetchAllUsers();
       }
     } catch (error) {
       setLoading(false);
-      if(error.response.status === 400){
-        alert(error.response.data.message)
+      if (error.response.status === 400) {
+        alert(error.response.data.message);
       }
     }
   };
 
- 
   let fetchAllUsers = async () => {
     try {
-      let res = await getAllUsers(10, 0,sessionStorage.getItem("token"));
+      let res = await getAllUsers(10, 0, sessionStorage.getItem("token"));
       if (res.status === 200) {
         setAllUser(res.data.content);
       }
@@ -137,7 +139,7 @@ function Users() {
 
   let handleDeleteUser = async (id) => {
     try {
-      let res = await deleteUserById(id,sessionStorage.getItem("token"));
+      let res = await deleteUserById(id, sessionStorage.getItem("token"));
       if (res.status === 200) {
         //update user list
         let updatedUsers = allUser.filter((user) => user.id !== id);
@@ -241,224 +243,221 @@ function Users() {
         {addUserModel.value && (
           <>
             <div className="add-user-form add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
-          
-                <div className={`bg-white   h-full w-full p-7`}>
-                  {!loading ? (
-                    <>
-                      <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
-                        Add User
-                      </h3>
-                      <form onSubmit={handleSendOtp} className="{space-y-4 }">
-                        {/* Email */}
-                        <div>
-                          <label className="block text-sm font-[500] text-gray-600 mb-1">
-                            Username :
-                          </label>
-                          <input
-                            type="text"
-                            value={userDetails.username}
-                            onChange={handleChange}
-                            name="username"
-                            placeholder="Enter username"
-                            className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Password :
-                          </label>
-                          <input
-                            type="password"
-                            name="password"
-                            onChange={handleChange}
-                            value={userDetails.password}
-                            placeholder="Enter password"
-                            className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                          />
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Role :
-                          </label>
+              <div className={`bg-white dark:bg-gray-900   h-full w-full p-7`}>
+                {!loading ? (
+                  <>
+                    <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
+                      Add User
+                    </h3>
+                    <form onSubmit={handleSendOtp} className="{space-y-4 }">
+                      {/* Email */}
+                      <div>
+                        <label className="block text-sm font-[500] text-gray-600 mb-1">
+                          Username :
+                        </label>
+                        <input
+                          type="text"
+                          value={userDetails.username}
+                          onChange={handleChange}
+                          name="username"
+                          placeholder="Enter username"
+                          className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Password :
+                        </label>
+                        <input
+                          type="password"
+                          name="password"
+                          onChange={handleChange}
+                          value={userDetails.password}
+                          placeholder="Enter password"
+                          className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Role :
+                        </label>
 
-                          <div className=" flex  gap-x-7 mt-3">
-                            <div>
-                              <input
-                                type="radio"
-                                value="ADMIN"
-                                name="role"
-                                checked={userDetails.role === "ADMIN"}
-                                id="admin"
-                                onChange={(e) => {
-                                  (setDoctorRole(false),
-                                    setdoctorDetails({
-                                      doctorName: "",
-                                      specialization: "",
-                                      fee: "",
-                                      departmentId: "",
-                                    }),
-                                    setFile(null),
-                                    setUserDetails({
-                                      ...userDetails,
-                                      role: e.target.value,
-                                    }));
-                                }}
-                                className="peer hidden"
-                              />
-                              <label
-                                htmlFor="admin"
-                                className="border-2 cursor-pointer border-[#06adaa] px-4 py-1 rounded font-semibold text-[#06adaa] transition-all duration-200 peer-checked:bg-[#06adaa] peer-checked:text-white peer-checked:outline-0"
-                              >
-                                ADMIN
-                              </label>
-                            </div>
-                            <div>
-                              <input
-                                type="radio"
-                                value="DOCTOR"
-                                name="role"
-                                id="doctor"
-                                checked={userDetails.role === "DOCTOR"}
-                                onChange={(e) => {
-                                  (setDoctorRole(true),
-                                    setUserDetails({
-                                      ...userDetails,
-                                      role: e.target.value,
-                                    }));
-                                }}
-                                className="peer hidden"
-                              />
-                              <label
-                                htmlFor="doctor"
-                                className="border-2 cursor-pointer border-[#06adaa] px-4 py-1 rounded font-semibold text-[#06adaa] transition-all duration-200 peer-checked:bg-[#06adaa] peer-checked:text-white peer-checked:outline-0"
-                              >
-                                DOCTOR
-                              </label>
-                            </div>
+                        <div className=" flex  gap-x-7 mt-3">
+                          <div>
+                            <input
+                              type="radio"
+                              value="ADMIN"
+                              name="role"
+                              checked={userDetails.role === "ADMIN"}
+                              id="admin"
+                              onChange={(e) => {
+                                (setDoctorRole(false),
+                                  setdoctorDetails({
+                                    doctorName: "",
+                                    specialization: "",
+                                    fee: "",
+                                    departmentId: "",
+                                  }),
+                                  setFile(null),
+                                  setUserDetails({
+                                    ...userDetails,
+                                    role: e.target.value,
+                                  }));
+                              }}
+                              className="peer hidden"
+                            />
+                            <label
+                              htmlFor="admin"
+                              className="border-2 cursor-pointer border-[#06adaa] px-4 py-1 rounded font-semibold text-[#06adaa] transition-all duration-200 peer-checked:bg-[#06adaa] peer-checked:text-white peer-checked:outline-0"
+                            >
+                              ADMIN
+                            </label>
+                          </div>
+                          <div>
+                            <input
+                              type="radio"
+                              value="DOCTOR"
+                              name="role"
+                              id="doctor"
+                              checked={userDetails.role === "DOCTOR"}
+                              onChange={(e) => {
+                                (setDoctorRole(true),
+                                  setUserDetails({
+                                    ...userDetails,
+                                    role: e.target.value,
+                                  }));
+                              }}
+                              className="peer hidden"
+                            />
+                            <label
+                              htmlFor="doctor"
+                              className="border-2 cursor-pointer border-[#06adaa] px-4 py-1 rounded font-semibold text-[#06adaa] transition-all duration-200 peer-checked:bg-[#06adaa] peer-checked:text-white peer-checked:outline-0"
+                            >
+                              DOCTOR
+                            </label>
                           </div>
                         </div>
+                      </div>
 
-                        {doctorRole && (
-                          <>
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
-                              <div>
-                                <label className="block text-sm font-[500] text-gray-600 mb-1">
-                                  Doctor Name :
-                                </label>
-                                <input
-                                  type="text"
-                                  onChange={handleChange}
-                                  value={doctorDetails.doctorName}
-                                  name="doctorName"
-                                  placeholder="Enter username"
-                                  className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                                />
-                              </div>
-
-                              <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                  Specialization :
-                                </label>
-                                <input
-                                  type="text"
-                                  name="specialization"
-                                  onChange={handleChange}
-                                  value={doctorDetails.specialization}
-                                  placeholder="Enter specialization"
-                                  className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                                />
-                              </div>
-                              <div>
-                                <select
-                                  name="departmentId"
-                                  onChange={handleChange}
-                                  value={doctorDetails.departmentId}
-                                  className="w-full text-gray-500 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                                >
-                                  <option value="">Select Department</option>
-                                  {allDepartment.map((department, index) => (
-                                    <option
-                                      key={index}
-                                      value={department.departId}
-                                    >
-                                      {department.departmentName}
-                                    </option>
-                                  ))}
-                                </select>
-                              </div>
-
-                              {/* Fee */}
-                              <div>
-                                <label
-                                  htmlFor="fee"
-                                  className="block text-gray-700 font-medium mb-1"
-                                >
-                                  Consultation Fee
-                                </label>
-                                <input
-                                  type="number"
-                                  onChange={handleChange}
-                                  value={doctorDetails.fee}
-                                  name="fee"
-                                  id="fee"
-                                  placeholder="Enter Fee "
-                                  className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500"
-                                />
-                              </div>
-
-                              {/* SELECT USER FOR DOCTOR  */}
-
-                              {/* Profile Photo */}
-                              <div>
-                                <label
-                                  htmlFor="profilePhoto"
-                                  className="block text-white px-5 py-1.5 cursor-pointer font-medium mb-1 bg-[#06adaa]"
-                                >
-                                  Select Profile Photo
-                                </label>
-                                <input
-                                  type="file"
-                                  name="profilePhoto"
-                                  id="profilePhoto"
-                                  onChange={handleChange}
-                                  accept="image/*"
-                                  className="w-full text-gray-700 cursor-pointer"
-                                />
-                              </div>
+                      {doctorRole && (
+                        <>
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 mt-5">
+                            <div>
+                              <label className="block text-sm font-[500] text-gray-600 mb-1">
+                                Doctor Name :
+                              </label>
+                              <input
+                                type="text"
+                                onChange={handleChange}
+                                value={doctorDetails.doctorName}
+                                name="doctorName"
+                                placeholder="Enter username"
+                                className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                              />
                             </div>
-                          </>
-                        )}
 
-                        {/* Submit Button */}
-                        <div className="flex justify-center gap-x-5 mt-8">
-                          <button
-                            type="button"
-                            disabled={loading}
-                            onClick={addUserModel.setOff}
-                            className="cursor-pointer w-1/3 bg-[#707070] text-white py-2 rounded-md font-semibold hover:bg-[#565656] transition duration-300"
-                          >
-                            cencel
-                          </button>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Specialization :
+                              </label>
+                              <input
+                                type="text"
+                                name="specialization"
+                                onChange={handleChange}
+                                value={doctorDetails.specialization}
+                                placeholder="Enter specialization"
+                                className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                              />
+                            </div>
+                            <div>
+                              <select
+                                name="departmentId"
+                                onChange={handleChange}
+                                value={doctorDetails.departmentId}
+                                className="w-full text-gray-500 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                              >
+                                <option value="">Select Department</option>
+                                {allDepartment.map((department, index) => (
+                                  <option
+                                    key={index}
+                                    value={department.departId}
+                                  >
+                                    {department.departmentName}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
 
-                          <button
-                            type="submit"
-                            className="cursor-pointer w-1/3 bg-[#06adaa] text-white py-2 rounded-md font-semibold hover:bg-[#08908d] transition duration-300"
-                          >
-                            Create
-                          </button>
-                        </div>
-                      </form>
-                    </>
-                  ) : (
-                    <>
+                            {/* Fee */}
+                            <div>
+                              <label
+                                htmlFor="fee"
+                                className="block text-gray-700 font-medium mb-1"
+                              >
+                                Consultation Fee
+                              </label>
+                              <input
+                                type="number"
+                                onChange={handleChange}
+                                value={doctorDetails.fee}
+                                name="fee"
+                                id="fee"
+                                placeholder="Enter Fee "
+                                className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring focus:border-blue-500"
+                              />
+                            </div>
+
+                            {/* SELECT USER FOR DOCTOR  */}
+
+                            {/* Profile Photo */}
+                            <div>
+                              <label
+                                htmlFor="profilePhoto"
+                                className="block text-white px-5 py-1.5 cursor-pointer font-medium mb-1 bg-[#06adaa]"
+                              >
+                                Select Profile Photo
+                              </label>
+                              <input
+                                type="file"
+                                name="profilePhoto"
+                                id="profilePhoto"
+                                onChange={handleChange}
+                                accept="image/*"
+                                className="w-full text-gray-700 cursor-pointer"
+                              />
+                            </div>
+                          </div>
+                        </>
+                      )}
+
+                      {/* Submit Button */}
+                      <div className="flex justify-center gap-x-5 mt-8">
+                        <button
+                          type="button"
+                          disabled={loading}
+                          onClick={addUserModel.setOff}
+                          className="cursor-pointer w-1/3 bg-[#707070] text-white py-2 rounded-md font-semibold hover:bg-[#565656] transition duration-300"
+                        >
+                          cencel
+                        </button>
+
+                        <button
+                          type="submit"
+                          className="cursor-pointer w-1/3 bg-[#06adaa] text-white py-2 rounded-md font-semibold hover:bg-[#08908d] transition duration-300"
+                        >
+                          Create
+                        </button>
+                      </div>
+                    </form>
+                  </>
+                ) : (
+                  <>
                     <div className="w-full h-full flex justify-center items-center bg-gray-300">
-                     <span class="circle-loader"></span>
-
+                      <span class="circle-loader"></span>
                     </div>
-                      
-                    </>
-                  )}
-                </div>
+                  </>
+                )}
+              </div>
             </div>
           </>
         )}

@@ -195,21 +195,21 @@ function Doctor_Schedule() {
 
   return (
     <>
-      <div className="doctor-page-container relative p-4">
+      <div className="doctor-page-container dark:bg-gray-900 relative p-4">
         <DashboardHeader
           title="Doctor Schedule"
           path={location.pathname}
         ></DashboardHeader>
 
-        <div className="w-full   p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+        <div className="w-full dark:bg-gray-800  p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
           <div className="flex justify-between">
-            <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
+            <h1 className="text-[#2c3e50] dark:text-slate-100 font-semibold text-[1.1rem]">
               All Doctor Schedule
             </h1>
             <div className="flex items-center gap-x-10">
               <div>
                 <select
-                  className="appearance-none px-10 py-0.5 rounded outline-2 outline-gray-400 text-gray-800"
+                  className="appearance-none dark:text-slate-100 px-10 py-0.5 rounded outline-2 outline-gray-400 text-gray-800"
                   onChange={handleChange}
                   name="day"
                 >
@@ -331,8 +331,8 @@ function Doctor_Schedule() {
         </div>
         {makeScheduleModel.value && (
           <>
-            <div className="add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
-              <div className="bg-white p-7 rounded md:w-1/2 lg:w-1/3">
+            <div className="add-user-form  absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
+              <div className="bg-white dark:bg-gray-800 dark:[&_*]:text-slate-100 p-7 rounded md:w-1/2 lg:w-1/3">
                 <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
                   Make Schedule
                 </h3>
@@ -388,12 +388,12 @@ function Doctor_Schedule() {
                       onChange={handleScheduleDetailsChange}
                       className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
                     >
-                      <option value="">Select Doctor</option>
+                      <option value="" className="dark:bg-gray-800">Select Doctor</option>
 
                       {allDoctors.map((doctor, index) => (
                         <option
                           key={index}
-                          className="text-gray-500"
+                          className="text-gray-500 dark:bg-gray-800"
                           value={doctor.doctorId}
                         >
                           {doctor.doctorName}
@@ -412,28 +412,28 @@ function Doctor_Schedule() {
                       name="day"
                       onChange={handleScheduleDetailsChange}
                       value={scheduleDetails.day}
-                      className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
+                      className="w-full border border-gray-300 rounded-md dark:bg-gray-800 p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
                     >
                       <option value="">Select Day</option>
-                      <option className="text-gray-500" value="SUNDAY">
+                      <option className="text-gray-500 dark:bg-gray-800" value="SUNDAY">
                         Sunday
                       </option>
-                      <option className="text-gray-500" value="MONDAY">
+                      <option className="text-gray-500 dark:bg-gray-800" value="MONDAY">
                         Monday
                       </option>
-                      <option className="text-gray-500" value="TUESDAY">
+                      <option className="text-gray-500 dark:bg-gray-800" value="TUESDAY">
                         Tuesday
                       </option>
-                      <option className="text-gray-500" value="WEDNESDAY">
+                      <option className="text-gray-500 dark:bg-gray-800" value="WEDNESDAY">
                         Wednesday
                       </option>
-                      <option className="text-gray-500" value="THURSDAY">
+                      <option className="text-gray-500 dark:bg-gray-800" value="THURSDAY">
                         Thursday
                       </option>
-                      <option className="text-gray-500" value="FRIDAY">
+                      <option className="text-gray-500 dark:bg-gray-800" value="FRIDAY">
                         Friday
                       </option>
-                      <option className="text-gray-500" value="SATURDAY">
+                      <option className="text-gray-500 dark:bg-gray-800" value="SATURDAY">
                         Saturday
                       </option>
                     </select>
