@@ -1,37 +1,35 @@
-import axios from "axios";
+import { api } from "./BaseUrl";
 
-const Appointment = axios.create({
-  baseURL: "https://hms-backend-production-d710.up.railway.app",
-});
+
 
 export let totalAppointment = (token) =>
-  Appointment.get("/total-appointment", {
+  api.get("/api/appointment/total-appointment", {
     headers: { Authorization: `Bearer ${token}` },
   });
 export let appointmentStatusCount = (token) =>
-  Appointment.get("/status-count", {
+  api.get("/api/appointment/status-count", {
     headers: { Authorization: `Bearer ${token}` },
   });
 export let getRecentAppointments = (token) =>
-  Appointment.get("/recent-appointments", {
+  api.get("/api/appointment/recent-appointments", {
     headers: { Authorization: `Bearer ${token}` },
   });
 export let getAllAppointments = (status, pageSize, pageNo, token) =>
-  Appointment.get(
-    `/all-appointments?filterBy=${status}&pageSize=${pageSize}&pageNo=${pageNo}`,
+  api.get(
+    `/api/appointment/all-appointments?filterBy=${status}&pageSize=${pageSize}&pageNo=${pageNo}`,
     { headers: { Authorization: `Bearer ${token}` } },
   );
 export let makeAppointment = (data, token) =>
-  Appointment.post(`/create-appointment`, data, {
+  api.post(`/api/appointment/create-appointment`, data, {
     headers: { Authorization: `Bearer ${token}` },
   });
 export let updateStatus = (id, Status, token) =>
-  Appointment.put(
-    `/update-status/${id}`,
+  api.put(
+    `/api/appointment/update-status/${id}`,
     { status: Status },
     { headers: { Authorization: `Bearer ${token}` } },
   );
 export let getAppointmentByDoctor = (token) =>
-  Appointment.get("appointment-by-doctor", {
+  api.get("/api/appointment/appointment-by-doctor", {
     headers: { Authorization: `Bearer ${token}` },
   });

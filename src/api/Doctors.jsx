@@ -1,42 +1,38 @@
-import axios from "axios";
-
-const doctors = axios.create({
-  baseURL: "https://hms-backend-production-d710.up.railway.app/doctor",
-});
+import { api } from "./BaseUrl";
 
 export let getDoctors = (token) =>
-  doctors.get("/all-doctors", {
+  api.get("/doctor/all-doctors", {
     headers: { Authorization: `Bearer ${token}` },
   });
 export let createDoctor = (id, formData, token) =>
-  doctors.post(`/create-doctor/${id}`, formData, {
+  api.post(`/doctor/create-doctor/${id}`, formData, {
     headers: { Authorization: `Bearer ${token}` },
   });
 export let getTotalNoDoctor = (token) =>
-  doctors.get("/total-doctors", {
+  api.get("/doctor/total-doctors", {
     headers: { Authorization: `Bearer ${token}` },
   });
 export let getAllDoctors = (token) =>
-  doctors.get("/all-doctors", {
+  api.get("/doctor/all-doctors", {
     headers: { Authorization: `Bearer ${token}` },
   });
 export let deleteDoctorById = (doctorId, token) =>
-  doctors.delete(`/delete-doctor/${doctorId}`, {
+  api.delete(`/doctor/delete-doctor/${doctorId}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 export let allDoctorsWithoutPagination = (token) =>
-  doctors.get("/allDoctors-without-pageable", {
+  api.get("/doctor/allDoctors-without-pageable", {
     headers: { Authorization: `Bearer ${token}` },
   });
 export let updateDoctor = (id, updateDetails, token) =>
-  doctors.put(`/update-doctor/${id}`, updateDetails, {
+  api.put(`/doctor/update-doctor/${id}`, updateDetails, {
     headers: { Authorization: `Bearer ${token}` },
   });
 export let getDoctorByDepartment = (id, token) =>
-  doctors.get(`/doctor-by-department/${id}`, {
+  api.get(`/doctor/doctor-by-department/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 export let getDoctorProfile = (token) =>
-  doctors.get(`doctor/profile`, {
+  api.get(`/doctor/doctor/profile`, {
     headers: { Authorization: `Bearer ${token}` },
   });

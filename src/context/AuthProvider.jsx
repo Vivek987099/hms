@@ -132,7 +132,7 @@ function AuthProvider({ children }) {
       }
     } catch (error) {
       setCircleLoader(false);
-      console.log("error console ");
+      console.log(error);
 
       Swal.fire({
         title: "Login Failed",

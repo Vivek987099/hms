@@ -248,9 +248,7 @@ function Patient() {
             </thead>
             <tbody>
               {allPatients.map((patient, index) => (
-                <tr
-                  key={index}
-                >
+                <tr key={index}>
                   <td className="px-1.5 dark:text-slate-100 lg:px-3 py-3 text-center whitespace-nowrap">
                     {patient.patientName}
                   </td>
@@ -276,14 +274,13 @@ function Patient() {
                         }
                         className="  cursor-pointer     py-0.5  rounded-2xl "
                       >
-                          <MdDeleteOutline className="text-[25px]  rounded-[4px] text-red-700 size-10 flex justify-center items-center  p-2" />
+                        <MdDeleteOutline className="text-[25px]  rounded-[4px] text-red-700 size-10 flex justify-center items-center  p-2" />
                       </button>
                       <button
                         onClick={() => handlePatientEdit(patient)}
                         className="  cursor-pointer  py-0.5 rounded-2xl "
                       >
-                                                <FaRegEdit className="text-[25px]  rounded-[4px] flex justify-center items-center text-blue-900 size-10  p-2" />
-
+                        <FaRegEdit className="text-[25px]  rounded-[4px] flex justify-center items-center text-blue-900 size-10  p-2" />
                       </button>
                     </td>
                   )}
@@ -295,7 +292,7 @@ function Patient() {
           <div className="lg:hidden !w-full">
             {allPatients.map((patient, index) => (
               <div
-              key={index}
+                key={index}
                 className={`
         bg-white dark:bg-slate-800
         border border-gray-200 dark:border-slate-700
@@ -305,6 +302,7 @@ function Patient() {
         transition-all duration-300
         hover:-translate-y-1
         p-5
+        my-3
        
       `}
               >

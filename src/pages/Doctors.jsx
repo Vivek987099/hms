@@ -2,11 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import DashboardHeader from "./../components/DashboardHeader";
 import { useLocation } from "react-router";
 import { AuthContext } from "../context/AuthProvider";
-import {
-  deleteDoctorById,
-  getAllDoctors,
-  updateDoctor,
-} from "../api/Doctors";
+import { deleteDoctorById, getAllDoctors, updateDoctor } from "../api/Doctors";
 import { FaChevronRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
 import { getUserByRole } from "../api/User";
@@ -14,19 +10,17 @@ import { getUserByRole } from "../api/User";
 function Doctors() {
   let location = useLocation();
   let { user } = useContext(AuthContext);
-  let {  allDepartment, fetchAllDepartment, updateDoctorModel } =
+  let { allDepartment, fetchAllDepartment, updateDoctorModel } =
     useContext(AuthContext);
- 
+
   const [updateDoctorDetails, setUpdateDoctorDetails] = useState({
     doctorName: "",
     specialization: "",
     profilePhotoUrl: "",
     fee: "",
-    email: "",
+
     departmentId: "",
   });
-
-  
 
   const [currentDoctorId, setCurrentDoctorId] = useState(null);
 
@@ -36,11 +30,6 @@ function Doctors() {
   let [currentPage, setCurrentPage] = useState(0);
   let [isLast, setIsLast] = useState(false);
   let [totalPages, setTotalPages] = useState(0);
-
-
- 
-
- 
 
   let fetchAllDoctors = async () => {
     let res = await getAllDoctors(sessionStorage.getItem("token"));
@@ -67,7 +56,10 @@ function Doctors() {
 
   let handleDeleteUser = async (doctorId) => {
     try {
-      let res = await deleteDoctorById(doctorId,sessionStorage.getItem("token"));
+      let res = await deleteDoctorById(
+        doctorId,
+        sessionStorage.getItem("token"),
+      );
       if (res.status === 200) {
         alert("doctor deleted successfully");
         let filteredDoctors = allDoctors.filter(
@@ -106,7 +98,11 @@ function Doctors() {
     console.log(currentDoctorId);
     console.log(updateDoctorDetails);
     try {
-      let res = await updateDoctor(currentDoctorId, updateDoctorDetails,sessionStorage.getItem("token"));
+      let res = await updateDoctor(
+        currentDoctorId,
+        updateDoctorDetails,
+        sessionStorage.getItem("token"),
+      );
       if (res.status === 200) {
         let updatedList = allDoctors.map((doctor) =>
           doctor.doctorId === currentDoctorId
@@ -132,7 +128,7 @@ function Doctors() {
 
   let fetchAllDoctorUser = async () => {
     try {
-      let res = await getUserByRole("DOCTOR",sessionStorage.getItem("token"));
+      let res = await getUserByRole("DOCTOR", sessionStorage.getItem("token"));
       if (res.status === 200) {
         setDoctorUsers(res.data);
       }
@@ -208,7 +204,7 @@ function Doctors() {
                       <div className=" size-12 rounded-full overflow-hidden">
                         <img
                           alt="profile"
-                          src={`https://hms-backend-production-d710.up.railway.app/file/${doctor.profilePhotoUrl}`}
+                          src={`http://localhost:8080/file/${doctor.profilePhotoUrl}`}
                           className="w-full h-auto"
                         />
                       </div>
@@ -311,7 +307,6 @@ function Doctors() {
           </div>
         </div>
         {/* ==========    ADD DOCTOR ========== */}
-       
 
         {/* UPDATE DOCTOR MODEL */}
 
@@ -339,20 +334,7 @@ function Doctors() {
                       className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
                     />
                   </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Email :
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={updateDoctorDetails.email}
-                      placeholder="example@gmail.com"
-                      required
-                      onChange={updateDataChange}
-                      className="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-[#06adaa]"
-                    />
-                  </div>
+
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       Specialization :

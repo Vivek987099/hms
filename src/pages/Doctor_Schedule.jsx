@@ -62,7 +62,7 @@ function Doctor_Schedule() {
   let fetchAllSchedules = async () => {
     try {
       let pageSize = 10;
-      let res = await getDoctorSchedules(day, pageSize, currentPage,sessionStorage.getItem("userId"));
+      let res = await getDoctorSchedules(day, pageSize, currentPage,sessionStorage.getItem("token"));
       if (res.status === 200) {
         setAllSchedule(res.data.content);
         setIsLast(res.data.last);
