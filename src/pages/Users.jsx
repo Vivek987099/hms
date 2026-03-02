@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import DashboardHeader from "./../components/DashboardHeader";
 import { useLocation } from "react-router";
 import { AuthContext } from "../context/AuthProvider";
-import Otp from "./../components/Otp";
 import { addNewUser, deleteUserById, getAllUsers } from "../api/User";
 
 function Users() {
@@ -158,7 +157,7 @@ function Users() {
           title="Users"
           path={location.pathname}
         ></DashboardHeader>
-        <div className="w-full  dark:bg-gray-800 p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+        <div className="w-full  dark:bg-gray-800 p-4 bg-white rounded-xl px-3 lg:px-5 xl:px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
           <h1 className="text-[#2c3e50] font-semibold text-[1.1rem]">
             All Users
           </h1>
@@ -167,22 +166,23 @@ function Users() {
               <table className="w-full dark:bg-gray-800 ">
                 <thead className="bg-[#f8f9fa] text-[#2c3e50]">
                   <tr className="border-b border-gray-300 dark:border-gray-600 dark:bg-gray-800">
-                    <th className=" px-10 py-3 text-left font-semibold">
+                    <th className=" px-3 md:px-5 lg:px-10 py-2 text-left font-semibold">
                       Username
                     </th>
-                    <th className=" px-10 py-3 text-left font-semibold">
+                    <th className=" px-3 md:px-5 lg:px-10 py-2 text-left font-semibold">
                       Role
                     </th>
-                    <th className=" px-10 py-3 text-left font-semibold">
+                    <th className=" px-3 md:px-5 lg:px-10 py-2 text-left font-semibold">
                       Status
                     </th>
                     {user.role === "ADMIN" && (
-                      <th className=" px-10 py-3 text-left font-semibold">
+                      <th className=" px-3 md:px-5 lg:px-10 py-2 text-left font-semibold">
                         Delete
                       </th>
                     )}
 
-                    <th className=" px-10 py-3 text-left font-semibold">
+
+                    <th className=" hidden lg:table-cell px-10 py-3 text-left font-semibold">
                       Created At
                     </th>
                   </tr>
@@ -193,13 +193,13 @@ function Users() {
                       key={index}
                       className="border-b border-gray-300 dark:border-gray-600 last:border-0"
                     >
-                      <td className="px-10 py-3 text-left">
+                      <td className="  px-3  md:px-5 lg:px-10 py-2 text-left">
                         {currentUser.username}
                       </td>
-                      <td className="px-10 py-3 text-left">
+                      <td className="  px-3  md:px-5 lg:px-10 py-2 text-left">
                         {currentUser.role}
                       </td>
-                      <td className="px-10 py-3 text-left">
+                      <td className="  px-3  md:px-5 lg:px-10 py-2 text-left">
                         {currentUser.status ? (
                           <>
                             <span className="bg-green-400 text-white px-4 py-1 rounded-2xl text-sm">
@@ -214,7 +214,7 @@ function Users() {
                       </td>
 
                       {user.role === "ADMIN" && (
-                        <td className="px-10 py-3 text-left cursor-pointer">
+                        <td className=" px-3 md:px-5 lg:px-10 py-2 text-left cursor-pointer">
                           <button
                             onClick={() => handleDeleteUser(currentUser.id)}
                             className="bg-red-500 text-white cursor-pointer px-4 py-1 rounded-2xl text-sm"
@@ -224,7 +224,7 @@ function Users() {
                         </td>
                       )}
 
-                      <td className="px-10 py-3 text-left">
+                      <td className="px-10 py-3 hidden lg:table-cell text-left">
                         {currentUser.createdAt}
                       </td>
                     </tr>
