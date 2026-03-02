@@ -38,7 +38,7 @@ function DoctorProfile() {
       {/* Doctor Image */}
       <div className="flex-shrink-0 flex justify-center">
         <img
-          src={`http://localhost:8080/file/${profileDetails.profile}`}
+          src={`https://hms-backend-production-c52b.up.railway.app/file/${profileDetails.profile}`}
           alt="Doctor"
           className="w-32 h-32 rounded-full object-cover ring-4 ring-blue-500"
         />
