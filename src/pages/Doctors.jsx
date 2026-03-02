@@ -204,7 +204,7 @@ function Doctors() {
                       <div className=" size-12 rounded-full overflow-hidden">
                         <img
                           alt="profile"
-                          src={`http://localhost:8080/file/${doctor.profilePhotoUrl}`}
+                          src={`https://hms-backend-production-c52b.up.railway.app/file/${doctor.profilePhotoUrl}`}
                           className="w-full h-auto"
                         />
                       </div>
@@ -258,7 +258,7 @@ function Doctors() {
                 >
                   <div className="aspect-square overflow-hidden">
                     <img
-                      src={`http://localhost:8080/file/${doctor.profilePhotoUrl}`}
+                      src={`https://hms-backend-production-c52b.up.railway.app/file/${doctor.profilePhotoUrl}`}
                       alt=""
                       className="h-full w-full object-cover"
                     />
