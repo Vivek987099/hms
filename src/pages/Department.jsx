@@ -119,7 +119,7 @@ function Department() {
           path={location.pathname}
         ></DashboardHeader>
 
-        <div className="w-full dark:bg-gray-800 p-4 bg-white rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+        <div className="w-full dark:bg-gray-800 p-4 bg-white rounded-xl px-3 lg:px-5 xl:px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
           <div className="flex justify-between">
             <h1 className="text-[#2c3e50] font-semibold text-[1.1rem] dark:text-slate-100">
               All Departments
@@ -128,18 +128,18 @@ function Department() {
           <div className="mt-5 overflow-x-auto outline-2 outline-gray-200 rounded-lg">
             {allDepartment ? (
               <>
-                <table className="w-full ">
+                <table className="w-full">
                   <thead className="bg-[#f8f9fa] text-[#2c3e50]">
                     <tr className="border-b border-gray-300">
-                      <th className=" px-10 py-3 text-left font-semibold">
+                      <th className=" px-3 lg:px-5 text-nowrap xl:px-10 py-2 lg:py-3 text-left font-semibold">
                         Department Name
                       </th>
-                      <th className=" px-10 py-3 text-left font-semibold">
+                      <th className=" px-3 lg:px-5  xl:px-10 py-2 lg:py-3 text-left font-semibold">
                         Description
                       </th>
 
                       {user.role === "ADMIN" && (
-                        <th className=" px-10 py-3 text-center font-semibold">
+                        <th className=" px-3 lg:px-5  xl:px-10 py-2 lg:py-3 text-center font-semibold">
                           Action
                         </th>
                       )}
@@ -151,15 +151,15 @@ function Department() {
                         key={index}
                         className="border-b border-gray-300 last:border-0 dark:text-slate-100"
                       >
-                        <td className="px-10 py-3 text-left">
+                        <td className=" px-3 lg:px-5 xl:px-10 py-2 lg:py-3 text-left">
                           {department.departmentName}
                         </td>
-                        <td className="px-10 py-3 text-left">
+                        <td className=" px-3 lg:px-5 xl:px-10 py-2 lg:py-3 text-left">
                           {department.departmentDescription}
                         </td>
 
                         {user.role === "ADMIN" && (
-                          <td className="px-10 py-3 text-center">
+                          <td className=" px-3 lg:px-5 xl:px-10 py-2 lg:py-3 text-center">
                             <div className="flex flex-col justify-center items-center gap-2 lg:flex-row">
                               <button
                                 onClick={() =>

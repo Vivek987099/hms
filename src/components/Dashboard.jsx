@@ -148,7 +148,7 @@ function Dashboard() {
         </div>
         <div className="w-ful mt-3 ">
           <div className="flex gap-5 flex-col lg:flex-row">
-            <div className="w-full bg-white dark:bg-gray-800  p-4 rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+            <div className="w-full bg-white dark:bg-gray-800  p-4 rounded-xl px-3 lg:px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
               <div className="mb-5">
                 <h1 className="text-[#2c3e50] font-semibold text-[1.1rem] dark:text-slate-100">
                   Performance Overview
@@ -176,7 +176,7 @@ function Dashboard() {
               </ResponsiveContainer>
             </div>
 
-            <div className="w-full  bg-white p-4 dark:bg-gray-800 rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+            <div className="w-full  bg-white p-4 dark:bg-gray-800 rounded-xl px-3 lg:px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
               <div className="mb-5">
                 <h1 className="text-[#2c3e50] font-semibold text-[1.1rem] dark:text-slate-100">
                   Appointment Status
@@ -232,19 +232,19 @@ function Dashboard() {
             <table className="w-full [&_*]:text-sm lg:[&_*]:text-base xl:[&_*]:text-lg">
               <thead className="bg-[#f8f9fa] text-[#2c3e50]">
                 <tr className="border-b border-gray-300">
-                  <th className=" px-10 py-3 text-left font-semibold">
+                  <th className=" px-10 py-1 lg:py-3 text-left font-semibold">
                     Doctor
                   </th>
-                  <th className=" px-10 py-3 text-left font-semibold">
+                  <th className=" px-10 py-1 lg:py-3 text-left font-semibold">
                     Patient
                   </th>
-                  <th className=" px-10 py-3 text-left font-semibold">
+                  <th className=" px-10 py-1 lg:py-3 text-left font-semibold">
                     Status
                   </th>
-                  <th className=" px-10 py-3 text-left font-semibold">
+                  <th className=" px-10 py-1 lg:py-3 text-left font-semibold">
                     Appointment Date
                   </th>
-                  <th className=" px-10 py-3 text-left font-semibold">
+                  <th className=" px-10 py-1 lg:py-3 text-left font-semibold">
                     Appointment Time
                   </th>
                 </tr>
@@ -255,13 +255,13 @@ function Dashboard() {
                     key={index}
                     className="border-b border-gray-300 last:border-0"
                   >
-                    <td className="text-gray-800 px-10 py-3 text-left">
+                    <td className="text-gray-800 px-2 lg:px-5 xl:px-10 py-3 text-left">
                       {appointment.doctorResponseDTO.doctorName}
                     </td>
-                    <td className="text-gray-800 px-10 py-3 text-left">
+                    <td className="text-gray-800 px-2 lg:px-5 xl:px-10 py-3 text-left">
                       {appointment.patientResponseDTO.patientName}
                     </td>
-                    <td className="text-gray-800 px-10 py-3 text-left">
+                    <td className="text-gray-800 px-2 lg:px-5 xl:px-10 py-3 text-left">
                       {appointment.status === "BOOKED" && (
                         <>
                           <span className="bg-amber-400 w-30 text-center text-sm block text-white px-4 py-2 font-semibold rounded-2xl">
@@ -284,10 +284,10 @@ function Dashboard() {
                         </>
                       )}
                     </td>
-                    <td className="text-gray-800 px-10 py-3 text-left">
+                    <td className="text-gray-800 px-2 lg:px-5 xl:px-10 py-3 text-left">
                       {appointment.date}
                     </td>
-                    <td className="text-gray-800 px-10 py-3 text-left">
+                    <td className="text-gray-800 px-2 lg:px-5 xl:px-10 py-3 text-left">
                       {appointment.time}
                     </td>
                   </tr>

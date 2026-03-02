@@ -180,13 +180,13 @@ function Appointments() {
           title="Appointments"
           path={location.pathname}
         ></DashboardHeader>
-        <div className="w-full   p-4 bg-white dark:bg-gray-800 rounded-xl px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
+        <div className="w-full   p-4 bg-white dark:bg-gray-800 rounded-xl lg:px-5 xl:px-15 shadow-[1px_1px_3px_rgba(0,0,0,0.1),-1px_-1px_3px_rgba(0,0,0,0.1)] mt-5">
           <div className="flex justify-between">
-            <h1 className="text-[#2c3e50] font-semibold text-[1.1rem] dark:text-slate-100">
+            <h1 className="text-[#2c3e50] font-semibold text-base lg:text-lg text-nowrap dark:text-slate-100">
               All Appointments
             </h1>
-            <div className="flex items-center gap-x-10">
-              <div>
+            <div className="flex items-center  gap-x-10">
+              <div className="hidden md:block">
                 <select
                   className="appearance-none px-10 py-0.5 rounded outline-2 outline-gray-400 dark:text-slate-100 text-gray-800"
                   onChange={handleChange}
@@ -225,31 +225,31 @@ function Appointments() {
               </div>
             </div>
           </div>
-          <div className="mt-5 overflow-x-auto outline-2 outline-gray-200 rounded-lg">
+          <div className="mt-5 overflow-x-auto md:outline-2 outline-gray-200 rounded-lg">
             {allAppointments ? (
               <>
                 <table className="w-full ">
-                  <thead className="bg-[#f8f9fa] text-[#2c3e50]">
-                    <tr className="border-b border-gray-300">
-                      <th className=" px-10 py-3 text-left font-semibold">
+                  <thead className="bg-[#e3e5e7] text-[#2c3e50]">
+                    <tr className="md:border-b md:border-gray-300">
+                      <th className=" px-2 text-nowrap lg:px-5 xl:px-10 py-3 text-left font-semibold">
                         Patient Name
                       </th>
-                      <th className=" px-10 py-3 text-left font-semibold">
+                      <th className=" px-2 text-nowrap lg:px-5 xl:px-10 py-3 text-left font-semibold">
                         Appointment With Dr.
                       </th>
 
-                      <th className=" px-10 py-3 text-left font-semibold">
+                      <th className=" px-2 text-nowrap lg:px-5 xl:px-10 py-3 text-left font-semibold">
                         Appointment Date
                       </th>
-                      <th className=" px-10 py-3 text-left font-semibold">
+                      <th className=" px-2 text-nowrap lg:px-5 xl:px-10 py-3 text-left font-semibold">
                         Appointment Time
                       </th>
-                      <th className=" px-10 py-3 text-left font-semibold">
+                      <th className=" px-2 text-nowrap lg:px-5 xl:px-10 py-3 text-left font-semibold">
                         Status
                       </th>
 
                       {user.role === "ADMIN" && (
-                        <th className=" px-10 py-3 text-left font-semibold">
+                        <th className=" px-2 text-nowrap lg:px-5 xl:px-10 py-3 text-left font-semibold">
                           Action
                         </th>
                       )}
@@ -261,37 +261,37 @@ function Appointments() {
                         key={index}
                         className="border-b border-gray-300 last:border-0"
                       >
-                        <td className="px-10 py-3 text-left whitespace-nowrap">
+                        <td className="px-2 lg:px-5 xl:px-10 py-1 lg:py-3 text-left whitespace-nowrap">
                           {appointment.patientResponseDTO.patientName}
                         </td>
-                        <td className="px-10 py-3 text-left whitespace-nowrap">
+                        <td className="px-2 lg:px-5 xl:px-10 py-1 lg:py-3 text-left whitespace-nowrap">
                           {appointment.doctorResponseDTO.doctorName}
                         </td>
 
-                        <td className="px-10 py-3 text-left whitespace-nowrap">
+                        <td className="px-2 lg:px-5 xl:px-10 py-1 lg:py-3 text-left whitespace-nowrap">
                           {appointment.date}
                         </td>
-                        <td className="px-10 py-3 text-left whitespace-nowrap">
+                        <td className="px-2 lg:px-5 xl:px-10 py-1 lg:py-3 text-left whitespace-nowrap">
                           {appointment.time}
                         </td>
-                        <td className="px-10 py-3 text-left whitespace-nowrap">
+                        <td className="px-2 lg:px-5 xl:px-10 py-1 lg:py-3 text-left whitespace-nowrap">
                           {appointment.status === "BOOKED" && (
                             <>
-                              <span className="bg-amber-400 w-30 text-center text-sm block text-white px-4 py-2 font-semibold rounded-2xl">
+                              <span className="bg-amber-400  text-center text-[10px]  text-white px-3  py-1 font-semibold rounded-2xl">
                                 BOOKED
                               </span>
                             </>
                           )}
                           {appointment.status === "CANCELED" && (
                             <>
-                              <span className="bg-red-600 t w-30 text-center text-sm block text-white px-4 py-2 font-semibold rounded-2xl">
+                              <span className="bg-red-600 t  text-center text-[10px]  text-white px-3  py-1 font-semibold rounded-2xl">
                                 CANCELED
                               </span>
                             </>
                           )}
                           {appointment.status === "COMPLETED" && (
                             <>
-                              <span className="bg-green-400 w-30 text-center text-sm block text-white px-4 py-2 font-semibold rounded-2xl">
+                              <span className="bg-green-400  text-center text-[10px]  text-white px-3  py-1 font-semibold rounded-2xl">
                                 COMPLETED
                               </span>
                             </>
@@ -299,14 +299,14 @@ function Appointments() {
                         </td>
 
                         {user.role === "ADMIN" && (
-                          <td className=" px-10 py-3 text-center font-semibold  ">
-                            <div className="flex flex-col gap-2 lg:gap-0 lg:flex-row">
-                              <button className="bg-red-500 text-white cursor-pointer px-4 py-1 mr-2  rounded-2xl text-[10px]">
+                          <td className=" px-2 lg:px-5 xl:px-10 py-2 lg:py-3 text-center font-semibold  ">
+                            <div className="flex gap-2 lg:gap-0 lg:flex-row">
+                              <button className="bg-red-500 text-white cursor-pointer px-3  py-1  mr-2  rounded-2xl text-[10px]">
                                 Delete
                               </button>
                               <button
                                 onClick={() => handleUpdateEdit(appointment)}
-                                className="bg-green-500 text-white cursor-pointer px-4 py-1 rounded-2xl text-[10px]"
+                                className="bg-green-500 text-white cursor-pointer px-3  py-1 rounded-2xl text-[10px]"
                               >
                                 Edit
                               </button>
@@ -327,7 +327,7 @@ function Appointments() {
         </div>
         {makeAppointmentModel.value && (
           <div className="add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
-            <div className="bg-white dark:bg-gray-900 dark:[&_*]:text-slate-100 p-7 rounded md:w-1/2 lg:w-1/3">
+            <div className="bg-white dark:bg-gray-900 dark:[&_*]:text-slate-100 p-7 rounded w-full m-1 md:m-0 md:w-1/2 lg:w-1/3">
               <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
                 Make an appointment
               </h3>

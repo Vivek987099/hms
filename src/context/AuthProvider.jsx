@@ -18,6 +18,18 @@ function AuthProvider({ children }) {
   let [totalPages, setTotalPages] = useState(0);
   let [currentPage, setCurrentPage] = useState(0);
   let [circleLoader, setCircleLoader] = useState(false);
+  let [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    return () => {
+      document.body.classList.remove("overflow-hidden");
+    };
+  }, [isOpen]);
 
   let navigate = useNavigate();
 
@@ -71,7 +83,6 @@ function AuthProvider({ children }) {
           if (profile.data.role === "DOCTOR") {
             navigate("/doctor/dashboard");
           }
-          
         }
       }
     } catch (error) {
@@ -107,13 +118,13 @@ function AuthProvider({ children }) {
                 status: profile.data.status,
                 createAt: profile.data.createdAt,
               });
-                setCircleLoader(false);
-                if (profile.data.role === "ADMIN") {
-                  navigate("/admin/dashboard");
-                }
-                if (profile.data.role === "DOCTOR") {
-                  navigate("/doctor/dashboard");
-                }
+              setCircleLoader(false);
+              if (profile.data.role === "ADMIN") {
+                navigate("/admin/dashboard");
+              }
+              if (profile.data.role === "DOCTOR") {
+                navigate("/doctor/dashboard");
+              }
 
               Swal.fire({
                 title: "Login Successful",
@@ -125,7 +136,7 @@ function AuthProvider({ children }) {
                     "px-6 py-2 bg-[#06adaa] text-white rounded-md hover:bg-[#08908d] block w-full",
                 },
                 buttonsStyling: false,
-              })
+              });
             }
           }
         }
@@ -207,7 +218,9 @@ function AuthProvider({ children }) {
         updatePatientModel,
         setLoading,
         circleLoader,
-        setCircleLoader
+        setCircleLoader,
+        isOpen,
+        setIsOpen,
       }}
     >
       {children}

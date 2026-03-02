@@ -332,7 +332,7 @@ function Doctor_Schedule() {
         {makeScheduleModel.value && (
           <>
             <div className="add-user-form  absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
-              <div className="bg-white dark:bg-gray-800 dark:[&_*]:text-slate-100 p-7 rounded md:w-1/2 lg:w-1/3">
+              <div className="bg-white dark:bg-gray-800 dark:[&_*]:text-slate-100 p-7 rounded w-full m-1 md:m-0 md:w-1/2 lg:w-1/3">
                 <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
                   Make Schedule
                 </h3>

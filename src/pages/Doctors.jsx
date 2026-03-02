@@ -10,7 +10,7 @@ import { getUserByRole } from "../api/User";
 function Doctors() {
   let location = useLocation();
   let { user } = useContext(AuthContext);
-  let { allDepartment, fetchAllDepartment, updateDoctorModel } =
+  let { allDepartment, fetchAllDepartment, updateDoctorModel , setIsOpen,isOpen} =
     useContext(AuthContext);
 
   const [updateDoctorDetails, setUpdateDoctorDetails] = useState({
@@ -21,6 +21,7 @@ function Doctors() {
 
     departmentId: "",
   });
+
 
   const [currentDoctorId, setCurrentDoctorId] = useState(null);
 
@@ -73,6 +74,7 @@ function Doctors() {
   };
 
   let handleEditDoctor = (currentDoctor, departmentId) => {
+    setIsOpen(true)
     updateDoctorModel.setOn();
     setCurrentDoctorId(currentDoctor.doctorId);
     setUpdateDoctorDetails({
@@ -83,6 +85,7 @@ function Doctors() {
       email: currentDoctor.email,
       departmentId: departmentId,
     });
+    
   };
 
   const updateDataChange = (e) => {
@@ -140,7 +143,7 @@ function Doctors() {
   return (
     <>
       {" "}
-      <div className="doctor-page-container dark:bg-gray-900 relative p-4">
+      <div className={`doctor-page-container dark:bg-gray-900 relative p-4 ${isOpen? 'overflow-hidden':''} `}>
         <DashboardHeader
           title="Doctors"
           path={location.pathname}
@@ -312,8 +315,8 @@ function Doctors() {
 
         {updateDoctorModel.value && (
           <>
-            <div className="add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-full flex justify-center items-center">
-              <div className="bg-white p-7 rounded md:w-1/2 lg:w-1/3">
+            <div className="add-user-form absolute inset-0 bg-black/40 top-0 left-0 w-full h-screen flex justify-center items-center">
+              <div className="bg-white p-7 rounded w-full m-1 md:m-0 md:w-1/2 lg:w-1/3">
                 <h3 className="text-[#2c3e50] text-[1.3rem] font-semibold mb-5">
                   Update Doctor
                 </h3>
